@@ -2,16 +2,18 @@
 
 # 🛡️ Anti-Violent-Layoff Evidence (AVLE) / 反暴力裁员证据链
 
-> **在雇主单方面锁号、关电脑、收缴 U 盾、物理清退时,劳动者仍能证明工作内容、时间、地点、强度、成果,并据此索取应得赔偿。**
+> **暴力裁员的预防 skills**:从思路、框架到具体执行和证据收集、固定。
+> **设计原则**:**功能完整 > 技术完备**(出问题时简单能跑 > 复杂不能用)
 >
-> **Defensive skill collection for workers facing sudden account lockouts, computer seizure, and violent dismissal.**
+> **Defensive skill collection for workers facing sudden account lockouts, computer seizure, and violent dismissal.
+> Built to be feature-complete over tech-perfect — when trouble hits, a working simple tool beats a beautiful broken one.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Skills: 2](https://img.shields.io/badge/skills-developer%20%2B%20general-green.svg)](skills/)
-[![Scripts: 11](https://img.shields.io/badge/scripts-11-blue.svg)](scripts/)
+[![Scripts: 11](https://img.shields.io/badge/scripts-12-blue.svg)](scripts/)
 [![Jurisdiction: CN](https://img.shields.io/badge/jurisdiction-CN%20%7C%20HK%20%7C%20SG%20%7C%20US-lightgrey.svg)](#-适用法律体系--jurisdictions)
-[![Version: v1.2.0](https://img.shields.io/badge/version-v1.2.0-orange.svg)](CHANGELOG.md)
+[![Version: v1.2.5](https://img.shields.io/badge/version-v1.2.0-orange.svg)](CHANGELOG.md)
 [![Tested on macOS](https://img.shields.io/badge/tested-macOS%2026.5.1-blue.svg)](#-测试--testing)
 [![bash 3.2+](https://img.shields.io/badge/bash-3.2%2B%20%7C%205.x-green.svg)](CONTRIBUTING.md)
 
