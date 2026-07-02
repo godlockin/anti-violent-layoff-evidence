@@ -70,4 +70,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-**维护者**:@test-maintainer
+**维护者 / Maintained by**: `@test-maintainer`

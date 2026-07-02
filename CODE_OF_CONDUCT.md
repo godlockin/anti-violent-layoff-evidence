@@ -65,4 +65,4 @@
 
 ---
 
-**维护者**:@test-maintainer
+**维护者 / Maintained by**: `@test-maintainer`

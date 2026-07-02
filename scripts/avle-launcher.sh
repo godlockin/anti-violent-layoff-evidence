@@ -224,7 +224,7 @@ echo ""
 echo -e "${BOLD}${BLUE}Step 2/6 — 你的公司域名${NC}"
 echo ""
 echo "用于:git-evidence 把公司邮箱的 commit 标为'COMPANY'(可能涉及公司项目)"
-echo "示例:acme.com / <company-domain> / bytedance.com"
+echo "示例:example.com / @test-company.com"
 echo ""
 
 if [[ $QUICK -eq 1 ]] || [[ $RESUME -eq 1 ]]; then

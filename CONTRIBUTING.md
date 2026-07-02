@@ -4,8 +4,8 @@
 >
 > Thank you for considering contributing. Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) and this guide first.
 
-**仓库地址 / Repository**:`https://github.com/<your-org>/anti-violent-layoff-evidence`  
-**维护者 / Maintainer**:@test-maintainer  
+**仓库地址 / Repository**:`https://github.com/your-org/anti-violent-layoff-evidence`  
+**维护者 / Maintainer**:`@test-maintainer`  
 **当前版本 / Current version**:`v1.0.0`
 
 ## 🎯 我们需要什么 / What We Need

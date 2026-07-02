@@ -21,7 +21,7 @@ metadata:
     - skills/general/SKILL.md
     - templates/incident-runbook.md
     - scripts/weekly-hash.sh
-  maintainer: @test-maintainer
+  maintainer: "@test-maintainer"
   version: 1.1.1
   updated: 2026-07-02
 ---
@@ -145,8 +145,8 @@ metadata:
 
 ## 🔗 仓库元信息 / Repo Meta
 
-- **仓库地址 / Repository**:`https://github.com/<your-org>/anti-violent-layoff-evidence`
-- **作者 / Maintainer**:@test-maintainer
+- **仓库地址 / Repository**:`https://github.com/your-org/anti-violent-layoff-evidence`
+- **作者 / Maintainer**:`@test-maintainer`
 - **当前版本 / Current version**:`v1.0.0`
 - **更新日期 / Last updated**:`2026-07-02`
 - **许可证 / License**:[MIT](LICENSE) + 法律免责
@@ -552,4 +552,4 @@ bash scripts/weekly-hash.sh
 ---
 
 **版本**:v1.0(2026-07-02)
-**设计**:@test-maintainer,工作日内持续迭代
+**设计 / Designed by**:`@test-maintainer`,iterate continuously during work hours

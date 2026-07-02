@@ -38,7 +38,7 @@ tests/
 │   └── sample-storage/             ← (本机数据,gitignore)
 │
 ├── output/                         ← 本机跑出的实际输出(查漏补缺)
-│   ├── 2026-07-02-<your-name>/      ← (本机数据,gitignore)
+│   ├── YYYY-MM-DD-<your-name>/     ← (本机数据,gitignore)
 │   └── ...
 │
 ├── snapshots/                      ← 快照对比(回归测试)
@@ -75,7 +75,7 @@ bash tests/snapshots/snapshot-diff.sh
 ```bash
 # 把结果归档到 tests/output/<日期>-<你的名字>/
 DATE=$(date +%Y-%m-%d)
-NAME=$(whoami)
+NAME="@your-name"  # 或 $(whoami) — 公开仓库建议用占位符
 RESULT_DIR="tests/output/$DATE-$NAME"
 mkdir -p "$RESULT_DIR"
 
@@ -155,4 +155,4 @@ echo "- [ ] 关键工单/项目截图是否齐全" >> "$RESULT_DIR/RUN.md"
 
 ---
 
-**Maintained by**: @test-maintainer
+**Maintained by**: `@test-maintainer`

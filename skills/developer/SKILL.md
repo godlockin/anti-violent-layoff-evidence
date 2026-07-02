@@ -29,7 +29,7 @@ metadata:
     - ../general/SKILL.md
     - ../../templates/incident-runbook.md
     - ../../scripts/weekly-hash.sh
-  maintainer: @test-maintainer
+  maintainer: "@test-maintainer"
   version: 1.1.1
   updated: 2026-07-02
 ---
@@ -54,7 +54,7 @@ metadata:
 - **同侪子 skill** / Peer sub-skill:[`../general/SKILL.md`](../general/SKILL.md)
 - **应急 runbook** / Incident runbook:[`../../templates/incident-runbook.md`](../../templates/incident-runbook.md)
 - **周维护** / Weekly maintenance:[`../../scripts/weekly-hash.sh`](../../scripts/weekly-hash.sh)
-- **仓库** / Repository:`https://github.com/<your-org>/anti-violent-layoff-evidence`
+- **仓库** / Repository:`https://github.com/your-org/anti-violent-layoff-evidence`
 
 ---
 

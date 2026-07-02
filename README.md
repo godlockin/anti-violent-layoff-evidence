@@ -169,7 +169,7 @@ bash scripts/avle-launcher.sh --dry-run   # 显示将要执行什么
 
 ```bash
 # 1) 克隆
-git clone https://github.com/<your-org>/anti-violent-layoff-evidence.git
+git clone https://github.com/your-org/anti-violent-layoff-evidence.git
 cd anti-violent-layoff-evidence
 
 # 2) 建立证据目录
@@ -263,7 +263,7 @@ bash scripts/unify-summarize.sh --package
 | **新加坡** | Employment Act | 6 个月 |
 | **美国** | Title VII / FLSA / WARN Act | 各州不同 |
 
-> 本仓库以**中国大陆**法律为主。其他法域的子 skill 见 [issues](https://github.com/<your-org>/anti-violent-layoff-evidence/issues)。
+> 本仓库以**中国大陆**法律为主。其他法域的子 skill 见 [issues](https://github.com/your-org/anti-violent-layoff-evidence/issues)。
 
 ## 📚 关键术语速查
 
@@ -350,17 +350,20 @@ bash scripts/unify-summarize.sh --package
 
 ## 🧪 测试 / Testing
 
-- **测试环境**:macOS 26.5.1 (build 25F80),bash 5.x / macOS bash 3.2 兼容
-- **测试时间**:2026-07-02
-- **测试人**:@test-maintainer
-- **实际生成证据包**:
-  - 13,658 个工作文件扫描(8 类扩展名)
-  - 31,863 个 git commits 导出(294 个作者)
+> **说明 / Note**:以下测试数据来自维护者本机实测,**已脱敏**。所有指向性的公司域名 / 个人邮箱 / 机器名均替换为 `@test.com` / `@test-company.com` 形式。
+>
+> The test data below is from maintainer's local runs and is **anonymized**. All identifying company domains, personal emails, and machine names are replaced with `@test.com` / `@test-company.com`.
+
+- **测试环境 / Environment**:macOS 26.x, bash 5.x / macOS bash 3.2 兼容
+- **测试人 / Tester**:`@test-maintainer`
+- **典型实测数据 / Typical real-world output**:
+  - ~13,000+ 工作文件扫描(8 类扩展名)
+  - ~30,000+ git commits 导出(数百个作者)
   - 自动识别**公司 vs 个人** git 账号(`@test.user@<company-domain>` 是公司域,被识别)
   - 55 法定节假日 + 12 调休(2024-2026)同步成功
-  - case-brief.md 自动生成 142 行
+  - case-brief.md 自动生成 ~140 行
 
-**回归测试**:
+**回归测试 / Regression test**:
 ```bash
 # 1) 检查关联数组兼容(macOS bash 3.2)
 for f in scripts/*.sh; do bash -n "$f"; done
@@ -377,6 +380,14 @@ bash scripts/unify-summarize.sh
 - git-evidence-scanner 缺账号分析能力 — 新增 `account_group` + `is_mine` 列 + `--account-report`
 
 **用户配置**:`~/.config/avle.conf` 可设 `MY_EMAILS` 和 `COMPANY_DOMAIN`,让 git-evidence 准确识别"你的 commit"
+
+**本机实测数据归档 / Local results archiving**:
+
+> 见 `tests/README.md`。本仓库的 `tests/output/` 目录只保留 `.gitkeep` 框架,
+> 不含任何真实数据。维护者本机数据归档在本地(不入仓),用于查漏补缺。
+>
+> See `tests/README.md`. The `tests/output/` directory in this repo only keeps `.gitkeep` placeholders,
+> no real data. Maintainer's local results stay on the local machine (git-ignored) for gap analysis.
 
 ---
 
@@ -429,7 +440,7 @@ Same as Chinese section above.
 
 ```bash
 # 1) Clone
-git clone https://github.com/<your-org>/anti-violent-layoff-evidence.git
+git clone https://github.com/your-org/anti-violent-layoff-evidence.git
 cd anti-violent-layoff-evidence
 
 # 2) Set up evidence dir
@@ -543,10 +554,10 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT
 
 <div align="center">
 
-**维护者 / Maintained by**: [@test-maintainer](https://github.com/<your-org>)  
+**维护者 / Maintained by**: [@test-maintainer](https://github.com/your-org)  
 **版本 / Version**:`v1.0.0`  
 **最后更新 / Last updated**:`2026-07-02`  
-**报告问题 / Report issues**:[github.com/<your-org>/anti-violent-layoff-evidence/issues](https://github.com/<your-org>/anti-violent-layoff-evidence/issues)  
+**报告问题 / Report issues**:[github.com/your-org/anti-violent-layoff-evidence/issues](https://github.com/your-org/anti-violent-layoff-evidence/issues)  
 **安全披露 / Security disclosure**:[SECURITY.md](SECURITY.md)
 
 🛡️ **Together we make the workplace more transparent.**
