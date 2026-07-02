@@ -7,7 +7,23 @@
 #   bash scripts/storage-evidence-scanner.sh --paths ~/extra
 #   bash scripts/storage-evidence-scanner.sh --json
 #   bash scripts/storage-evidence-scanner.sh --since 30       # 最近 30 天修改
-set -euo pipefail
+#   bash scripts/storage-evidence-scanner.sh --no-rust        # 强制用 bash find,不用 rust 加速
+set -eo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+USE_RUST=1  # 默认用 rust 加速
+
+# 解析 --no-rust
+for arg in "$@"; do
+  [[ "$arg" == "--no-rust" ]] && USE_RUST=0
+done
+
+# 加载 rust 加速器
+if [[ $USE_RUST -eq 1 ]] && [[ -f "$SCRIPT_DIR/rust-accel.sh" ]]; then
+  # shellcheck source=rust-accel.sh
+  source "$SCRIPT_DIR/rust-accel.sh"
+  avle_detect_all >/dev/null 2>&1 || true
+fi
 
 EVIDENCE_ROOT="${EVIDENCE_ROOT:-$HOME/evidence}"
 OUTDIR="$EVIDENCE_ROOT/storage-evidence"

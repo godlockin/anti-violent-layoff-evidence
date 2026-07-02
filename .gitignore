@@ -1,10 +1,23 @@
 # === 关键:绝不入库 ===
 # 个人证据、本地配置、密钥、密码
+
+# === 个人 evidence 数据(本机实测结果) ===
+# 用户跑 avle-launcher.sh 后生成的本地数据
+# 这些是 UT/IT 测试结果,不入开源仓库
+evidence/
+collected/
+case-brief.md
+evidence-scan.json
+git-account-report.md
+
+# 用户实际跑出的 CSV/JSON 数据
 *.eml
 *.msg
 *.mbox
 *.pst
 *.ost
+
+# 工资/薪金/敏感字样
 *工资条*
 *工资*
 *薪金*
@@ -13,18 +26,12 @@
 *payslip*
 *工资单*
 
-# 个人云盘同步目录(用户自建)
-evidence/
-collected/
-case-brief.md
-evidence-scan.json
-
-# 加密归档(可能含敏感信息)
+# === 加密归档(可能含敏感信息) ===
 *.tar.gz.enc
 *.zip.enc
 *.7z.enc
 
-# 密钥
+# === 密钥 / 身份 ===
 *.pem
 *.key
 id_rsa*
@@ -34,8 +41,6 @@ id_ed25519*
 *.p12
 *.pfx
 .gpg/
-
-# 个人 git 身份
 .gitconfig
 .gnupg/
 .npmrc
@@ -44,7 +49,28 @@ id_ed25519*
 .aws/
 .ssh/
 
-# 系统 / IDE
+# === tests/ 目录(UT/IT) ===
+# tests/ 框架本身提交(测试脚本)
+# tests/fixtures/ 忽略(用户实测数据)
+# tests/output/ 忽略(本机跑出的报告)
+# tests/snapshots/ 忽略(快照对比)
+tests/fixtures/*
+tests/fixtures/.gitkeep
+tests/output/*
+tests/output/.gitkeep
+tests/snapshots/*
+tests/snapshots/.gitkeep
+tests/local-runs/*
+tests/local-runs/.gitkeep
+
+# 但保留测试框架文件:
+# tests/integration/*.sh
+# tests/unit/*.sh
+# tests/expected/*.md
+# tests/README.md
+!tests/**/.gitkeep
+
+# === 系统 / IDE ===
 .DS_Store
 Thumbs.db
 .idea/
@@ -53,15 +79,28 @@ Thumbs.db
 *.swo
 *~
 .bak
+*.bak
+.bak/
 
-# 测试产物
+# === 临时 / 缓存 ===
 /tmp/
 /test-output/
 *.test
 *.tmp
+*.log
+*.pid
 
-# 文档构建
+# === 文档构建 ===
 /site/
 /public/
 .docusaurus/
 .cache/
+
+# === Rust 工具链产物(如果用户自编译) ===
+# 如果 avle-rust 工具自编译,产物体积大,不入库
+target/
+Cargo.lock
+
+# === 跨机器同步 ===
+*~
+.Trash
