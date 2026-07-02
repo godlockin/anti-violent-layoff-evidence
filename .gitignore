@@ -101,6 +101,9 @@ Thumbs.db
 target/
 Cargo.lock
 
+# === git filter-repo 备份 ===
+.git.backup-*/
+
 # === 跨机器同步 ===
 *~
 .Trash

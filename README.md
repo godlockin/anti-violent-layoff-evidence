@@ -389,6 +389,28 @@ bash scripts/unify-summarize.sh
 > See `tests/README.md`. The `tests/output/` directory in this repo only keeps `.gitkeep` placeholders,
 > no real data. Maintainer's local results stay on the local machine (git-ignored) for gap analysis.
 
+## 🔒 隐私保护 / Privacy
+
+本仓库 v1.2.3+ **所有指向性信息已脱敏**:
+- 个人姓名/邮箱 → `@test-maintainer` / `<your-username>@<company-domain>`
+- 公司域名 → `<company-domain>` (示例)
+- GitHub org → `<your-org>`
+- 工作分支 → `<branch>`
+
+本仓库 v1.2.4+ **git 历史也已脱敏**:用 `git filter-repo` 改写所有 commit,
+旧 commit hash 全部失效,远程已 force push。
+**任何人从 GitHub 拉取后,都看不到指向性内容。**
+
+This repo v1.2.3+ has been **fully anonymized**:
+- Personal names/emails → `@test-maintainer` / `<your-username>@<company-domain>`
+- Company domains → `<company-domain>` (example)
+- GitHub org → `<your-org>`
+- Work branches → `<branch>`
+
+This repo v1.2.4+ git history has also been **rewritten** with `git filter-repo`,
+all old commit hashes invalidated, remote force-pushed.
+**No identifying content is visible to anyone pulling from GitHub.**
+
 ---
 
 # 🇺🇸 English
