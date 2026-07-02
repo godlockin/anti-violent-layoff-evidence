@@ -1,0 +1,53 @@
+# AVLE 用户配置文件 / AVLE User Configuration
+# 复制为 ~/.config/avle.conf 后修改
+# Copy to ~/.config/avle.conf and edit
+
+# === 你的身份信息 / Your identity ===
+# 用于:git-evidence 按邮箱过滤你自己的 commit
+# Used by: git-evidence to filter YOUR commits
+
+# 你的 git 邮箱(可多个,空格分隔)
+# Your git emails (space-separated)
+# 示例: MY_EMAILS="you@gmail.com you@personal.com"
+MY_EMAILS=""
+
+# 你的公司邮箱域名(用于识别"公司账号")
+# Your company email domain (to identify "company account")
+# 示例: COMPANY_DOMAIN="acme.com"
+COMPANY_DOMAIN=""
+
+# === 存储 / Storage ===
+# 证据根目录(默认 ~/evidence)
+EVIDENCE_ROOT="$HOME/evidence"
+
+# 跳过扫描的目录(空格分隔)
+EXCLUDE_DIRS="$HOME/Library/Caches $HOME/.Trash"
+
+# === 节假日 / Holidays ===
+# 你所在的国家/地区(影响加班费计算)
+# 国家代码: CN(中国) | HK | SG | US
+JURISDICTION="CN"
+
+# === 位置 / Location ===
+# 你的"公司 WiFi SSID"(用于自动识别 office 位置)
+# 留空则不自动检测
+COMPANY_WIFI_SSID=""
+
+# 你的"家 WiFi SSID"
+HOME_WIFI_SSID=""
+
+# === 可信家人 / Trusted family ===
+# 用于联系信息(输出到 case-brief.md)
+TRUSTED_NAME=""
+TRUSTED_PHONE=""
+
+# === 律师 / Lawyer ===
+LAWYER_NAME=""
+LAWYER_PHONE=""
+
+# === 高级 / Advanced ===
+# 启用 rust 加速器(需要 cargo install avle-fast-scan)
+USE_RUST_ACCELERATOR=0
+
+# 每周 hash 频率(0=关闭,1=启用)
+WEEKLY_HASH_ENABLED=1

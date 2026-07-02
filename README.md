@@ -11,7 +11,9 @@
 [![Skills: 2](https://img.shields.io/badge/skills-developer%20%2B%20general-green.svg)](skills/)
 [![Scripts: 5](https://img.shields.io/badge/scripts-5-blue.svg)](scripts/)
 [![Jurisdiction: CN](https://img.shields.io/badge/jurisdiction-CN%20%7C%20HK%20%7C%20SG%20%7C%20US-lightgrey.svg)](#-适用法律体系--jurisdictions)
-[![Version: v1.0.0](https://img.shields.io/badge/version-v1.0.0-orange.svg)](CHANGELOG.md)
+[![Version: v1.1.1](https://img.shields.io/badge/version-v1.1.1-orange.svg)](CHANGELOG.md)
+[![Tested on macOS](https://img.shields.io/badge/tested-macOS%2026.5.1-blue.svg)](#-测试--testing)
+[![bash 3.2+](https://img.shields.io/badge/bash-3.2%2B%20%7C%205.x-green.svg)](CONTRIBUTING.md)
 
 [English](#-english) | [中文](#-中文)
 
@@ -216,6 +218,7 @@ bash scripts/unify-summarize.sh --package
 | 脚本 | 适用岗位 | 何时跑 |
 |------|---------|--------|
 | [`scripts/git-evidence-scanner.sh`](scripts/git-evidence-scanner.sh) | 程序员/测试/产品/DevOps | 入职后 1 周内首次,后每周 |
+| `bash scripts/git-evidence-scanner.sh --my-email --account-report` | (同上) | **推荐**:只统计自己的 commit + 完整账号分析 |
 
 ### Layer 3 — 汇总层工具
 | 脚本 | 用途 | 何时跑 |
@@ -268,19 +271,31 @@ bash scripts/unify-summarize.sh --package
 
 ## 📋 路线图
 
-### v1.0(本版本 2026-07-02)
+### v1.0(2026-07-02)
 - ✅ 主 skill (SKILL.md)
 - ✅ 程序员/通用岗子 skill
 - ✅ 5 个工具脚本
 - ✅ 应急 runbook
 - ✅ 中英双语 README
 
-### v1.1(计划)
+### v1.1(2026-07-02)— 当前版本
+- ✅ 16 个网盘 + 移动硬盘扫描
+- ✅ 法定节假日 + 调休(2024-2026)
+- ✅ WFH / 客户现场 / 出差位置记录
+- ✅ 程序员 git commit 遍历
+- ✅ 三层架构(基础层 + 角色层 + 汇总层)
+- ✅ macOS bash 3.2 兼容(关键 bug 修复)
+- ✅ git 账号分析(COMPANY vs PERSONAL vs EDU)
+- ✅ ~/.config/avle.conf 用户配置
+- ✅ 本机实测,case-brief.md 自动生成
+
+### v1.2(计划)
 - ⏳ 销售岗子 skill
 - ⏳ 财务岗子 skill
 - ⏳ 美/港/新法域适配
-- ⏳ 英文 README 完整版
-- ⏳ 律师 / 法律援助资源地图
+- ⏳ rust 加速器(cargo install avle-fast-scan)
+- ⏳ location-worklog --install-cron
+- ⏳ 自动 TSA 时间戳集成
 
 ### v2.0(远期)
 - ⏳ 跨法域仲裁模板
@@ -301,6 +316,38 @@ bash scripts/unify-summarize.sh --package
 > **永远不要把所有证据放在别人的服务器上。**
 > **永远不要相信"承诺给 N 你签了再说"。**
 > **永远不要在情绪激动时做决定。**
+
+---
+
+## 🧪 测试 / Testing
+
+- **测试环境**:macOS 26.5.1 (build 25F80),bash 5.x / macOS bash 3.2 兼容
+- **测试时间**:2026-07-02
+- **测试人**:@test-maintainer
+- **实际生成证据包**:
+  - 13,658 个工作文件扫描(8 类扩展名)
+  - 31,863 个 git commits 导出(294 个作者)
+  - 自动识别**公司 vs 个人** git 账号(`@test.user@<company-domain>` 是公司域,被识别)
+  - 55 法定节假日 + 12 调休(2024-2026)同步成功
+  - case-brief.md 自动生成 142 行
+
+**回归测试**:
+```bash
+# 1) 检查关联数组兼容(macOS bash 3.2)
+for f in scripts/*.sh; do bash -n "$f"; done
+
+# 2) 跑全量(只读,无副作用)
+bash scripts/storage-evidence-scanner.sh
+bash scripts/git-evidence-scanner.sh --account-report
+bash scripts/holiday-sync.sh
+bash scripts/unify-summarize.sh
+```
+
+**修复的 bug**(v1.1.1):
+- 4 个脚本在 macOS bash 3.2 下因 `declare -A` 报错 — 改用变量 / 文件模拟
+- git-evidence-scanner 缺账号分析能力 — 新增 `account_group` + `is_mine` 列 + `--account-report`
+
+**用户配置**:`~/.config/avle.conf` 可设 `MY_EMAILS` 和 `COMPANY_DOMAIN`,让 git-evidence 准确识别"你的 commit"
 
 ---
 

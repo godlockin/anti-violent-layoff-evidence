@@ -4,7 +4,7 @@ description: 事发当日 60 秒应急 runbook - 可打印版。60-second emerge
 metadata:
   type: template
   parent: anti-violent-layoff-evidence
-  version: 1.0.0
+  version: 1.1.1
   updated: 2026-07-02
 ---
 
