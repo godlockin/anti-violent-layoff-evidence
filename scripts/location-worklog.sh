@@ -16,17 +16,26 @@ LOG_FILE="$LOG_DIR/locations.csv"
 mkdir -p "$LOG_DIR"
 [[ -f "$LOG_FILE" ]] || echo "start_time,end_time,location_type,location_detail,wifi_ssid,latitude,longitude,address,note,source" > "$LOG_FILE"
 
-# 位置类型定义
-declare -A LOC_TYPES=(
-  [home]="家庭办公 / WFH"
-  [office]="公司办公室"
-  [client]="客户现场"
-  [travel]="出差"
-  [coffeeshop]="咖啡馆"
-  [coworking]="联合办公"
-  [commute]="通勤"
-  [other]="其他"
-)
+# 位置类型定义(用 case 替代关联数组,macOS bash 3.2 兼容)
+loc_label() {
+  case "$1" in
+    home)       echo "家庭办公 / WFH";;
+    office)     echo "公司办公室";;
+    client)     echo "客户现场";;
+    travel)     echo "出差";;
+    coffeeshop) echo "咖啡馆";;
+    coworking)  echo "联合办公";;
+    commute)    echo "通勤";;
+    other)      echo "其他";;
+    *)          echo "";;
+  esac
+}
+loc_is_valid() {
+  case "$1" in
+    home|office|client|travel|coffeeshop|coworking|commute|other) return 0;;
+    *) return 1;;
+  esac
+}
 
 # 默认参数
 START=""
@@ -50,7 +59,7 @@ while [[ $# -gt 0 ]]; do
     --print)    PRINT=1; shift;;
     --ical)     ICAL=1; shift;;
     --summary)  SUMMARY="$2"; shift 2;;
-    --list)     echo "支持的位置类型:"; for k in "${!LOC_TYPES[@]}"; do echo "  $k - ${LOC_TYPES[$k]}"; done; exit 0;;
+    --list)     echo "支持的位置类型:"; for k in home office client travel coffeeshop coworking commute other; do echo "  $k - $(loc_label "$k")"; done; exit 0;;
     -h|--help)  sed -n '2,25p' "$0"; exit 0;;
     *) echo "Unknown arg: $1" >&2; exit 1;;
   esac
@@ -113,7 +122,7 @@ auto_detect() {
   echo "🤖 自动探测结果:"
   echo "   时间: $now"
   echo "   WiFi: ${ssid:-(无)}"
-  echo "   推断位置: $loc (${LOC_TYPES[$loc]:-未知})"
+  echo "   推断位置: $loc ($(loc_label "$loc"))"
   echo "   备注: $note_auto"
 }
 
@@ -126,7 +135,7 @@ add_entry() {
   fi
 
   # 检查 location
-  if [[ -z "${LOC_TYPES[$LOCATION]:-}" ]]; then
+  if ! loc_is_valid "$LOCATION"; then
     echo "ERROR: 未知位置类型 '$LOCATION'。--list 查看支持的" >&2
     exit 1
   fi
@@ -139,10 +148,10 @@ add_entry() {
 
   # CSV 转义
   safe_note=$(echo "$NOTE" | sed 's/,/;/g' | sed 's/"/""/g')
-  safe_detail=$(echo "${LOC_TYPES[$LOCATION]}" | sed 's/,/;/g')
+  safe_detail=$(loc_label "$LOCATION" | sed 's/,/;/g')
 
   echo "$START,$END,$LOCATION,$safe_detail,${ssid:-},,,,$safe_note,$SOURCE" >> "$LOG_FILE"
-  echo "✅ 已记录: $START → $END [$LOCATION] ${LOC_TYPES[$LOCATION]}"
+  echo "✅ 已记录: $START → $END [$LOCATION] $(loc_label "$LOCATION")"
 }
 
 # Print
@@ -244,7 +253,7 @@ else
   END=${END:-$START}
   echo ""
   echo "位置类型:"
-  for k in "${!LOC_TYPES[@]}"; do printf "  %-12s - %s\n" "$k" "${LOC_TYPES[$k]}"; done
+  for k in home office client travel coffeeshop coworking commute other; do printf "  %-12s - %s\n" "$k" "$(loc_label "$k")"; done
   echo ""
   read -rp "位置类型 [home/office/client/travel/...]: " LOCATION
   read -rp "备注: " NOTE

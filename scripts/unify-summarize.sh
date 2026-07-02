@@ -179,35 +179,39 @@ now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
     echo ""
     echo "### 按类别统计"
     echo ""
-    declare -A cat_files
+    # 计数(用变量避免关联数组)
+    cat_mail=0; cat_office=0; cat_image=0; cat_media=0; cat_structured=0; cat_archive=0
     for f in $(find "$EVIDENCE_ROOT" -type f \( \
       -name "*.eml" -o -name "*.msg" -o -name "*.mbox" -o -name "*.pst" -o -name "*.ost" \) 2>/dev/null); do
-      cat_files[mail]=$(( ${cat_files[mail]:-0} + 1 ))
+      cat_mail=$((cat_mail + 1))
     done
     for f in $(find "$EVIDENCE_ROOT" -type f \( \
       -name "*.pdf" -o -name "*.docx" -o -name "*.xlsx" -o -name "*.pptx" \) 2>/dev/null); do
-      cat_files[office]=$(( ${cat_files[office]:-0} + 1 ))
+      cat_office=$((cat_office + 1))
     done
     for f in $(find "$EVIDENCE_ROOT" -type f \( \
       -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.heic" -o -name "*.webp" -o -name "*.bmp" -o -name "*.tiff" \) 2>/dev/null); do
-      cat_files[image]=$(( ${cat_files[image]:-0} + 1 ))
+      cat_image=$((cat_image + 1))
     done
     for f in $(find "$EVIDENCE_ROOT" -type f \( \
       -name "*.mp3" -o -name "*.m4a" -o -name "*.wav" -o -name "*.mp4" -o -name "*.mov" -o -name "*.avi" \) 2>/dev/null); do
-      cat_files[media]=$(( ${cat_files[media]:-0} + 1 ))
+      cat_media=$((cat_media + 1))
     done
     for f in $(find "$EVIDENCE_ROOT" -type f \( \
       -name "*.ics" -o -name "*.vcf" -o -name "*.har" -o -name "*.json" -o -name "*.sqlite" -o -name "*.pcap" -o -name "*.pcapng" \) 2>/dev/null); do
-      cat_files[structured]=$(( ${cat_files[structured]:-0} + 1 ))
+      cat_structured=$((cat_structured + 1))
     done
     for f in $(find "$EVIDENCE_ROOT" -type f \( \
       -name "*.enc" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*.7z" \) 2>/dev/null); do
-      cat_files[archive]=$(( ${cat_files[archive]:-0} + 1 ))
+      cat_archive=$((cat_archive + 1))
     done
 
-    for k in mail office image media structured archive; do
-      [[ ${cat_files[$k]:-0} -gt 0 ]] && echo "  - $k: ${cat_files[$k]}"
-    done
+    [[ $cat_mail -gt 0 ]]      && echo "  - mail: $cat_mail"
+    [[ $cat_office -gt 0 ]]    && echo "  - office: $cat_office"
+    [[ $cat_image -gt 0 ]]     && echo "  - image: $cat_image"
+    [[ $cat_media -gt 0 ]]     && echo "  - media: $cat_media"
+    [[ $cat_structured -gt 0 ]] && echo "  - structured: $cat_structured"
+    [[ $cat_archive -gt 0 ]]   && echo "  - archive: $cat_archive"
   else
     echo "⚠️  $EVIDENCE_ROOT 不存在"
   fi

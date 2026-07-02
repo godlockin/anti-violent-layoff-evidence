@@ -15,6 +15,10 @@ DAYS_BACK=0
 JSON=0
 EXTRA_PATHS=()
 NO_CLOUD=0
+# 用 -O 取消 nounset 比改 -u 安全(下面引用了多种未初始化数组)
+set +u
+# 重新启用基础保护
+set -eo pipefail
 
 # 默认扫描根
 declare -a DEFAULT_PATHS=(
@@ -130,16 +134,17 @@ if [[ -d "/mnt" ]]; then
   done < <(find /mnt -maxdepth 2 -type d 2>/dev/null)
 fi
 
-# 去重
-declare -A seen
+# 去重(macOS bash 3.2 兼容)
+seen_file=$(mktemp)
 final_paths=()
 for p in "${scan_paths[@]}"; do
   rp=$(cd "$p" 2>/dev/null && pwd -P || echo "$p")
-  if [[ -z "${seen[$rp]:-}" ]]; then
-    seen[$rp]=1
+  if ! grep -Fxq "$rp" "$seen_file" 2>/dev/null; then
+    echo "$rp" >> "$seen_file"
     final_paths+=("$rp")
   fi
 done
+rm -f "$seen_file"
 
 if [[ ${#final_paths[@]} -eq 0 ]]; then
   echo "⚠️  未发现可扫描目录。检查 --paths 或安装云盘客户端。"

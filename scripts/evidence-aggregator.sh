@@ -50,9 +50,12 @@ for f in "${evidence_files[@]}"; do
   total_size=$((total_size + s))
 done
 
-# 3. 按类别分组
-declare -A cat_count
-declare -A cat_size
+# 3. 按类别分组(macOS bash 3.2 兼容:用变量)
+cat_count_incident=0; cat_size_incident=0
+cat_count_periodic=0; cat_size_periodic=0
+cat_count_timestamp=0; cat_size_timestamp=0
+cat_count_notarized=0; cat_size_notarized=0
+cat_count_other=0; cat_size_other=0
 for f in "${evidence_files[@]}"; do
   rel="${f#$EVIDENCE_ROOT/}"
   case "$rel" in
@@ -64,7 +67,14 @@ for f in "${evidence_files[@]}"; do
   esac
   s=$(stat -f %z "$f" 2>/dev/null || stat -c %s "$f" 2>/dev/null || echo 0)
   cat_count[$cat]=$((${cat_count[$cat]:-0} + 1))
-  cat_size[$cat]=$((${cat_size[$cat]:-0} + s))
+  s=$(stat -f %z "$f" 2>/dev/null || stat -c %s "$f" 2>/dev/null || echo 0)
+  case "$cat" in
+    incident)  cat_count_incident=$((cat_count_incident+1));  cat_size_incident=$((cat_size_incident+s));;
+    periodic)  cat_count_periodic=$((cat_count_periodic+1));  cat_size_periodic=$((cat_size_periodic+s));;
+    timestamp) cat_count_timestamp=$((cat_count_timestamp+1)); cat_size_timestamp=$((cat_size_timestamp+s));;
+    notarized) cat_count_notarized=$((cat_count_notarized+1)); cat_size_notarized=$((cat_size_notarized+s));;
+    *)         cat_count_other=$((cat_count_other+1));        cat_size_other=$((cat_size_other+s));;
+  esac
 done
 
 # 4. 输出 case-brief.md
@@ -80,10 +90,10 @@ done
   echo ""
   echo "| 类别 | 文件数 | 大小 | 备注 |"
   echo "|------|--------|------|------|"
-  echo "| incident (事发) | ${cat_count[incident]:-0} | $(numfmt --to=iec ${cat_size[incident]:-0} 2>/dev/null || echo "0B") | 暴力清退相关 |"
-  echo "| periodic (周期) | ${cat_count[periodic]:-0} | $(numfmt --to=iec ${cat_size[periodic]:-0} 2>/dev/null || echo "0B") | 周/月/季度证据 |"
-  echo "| timestamp (时间戳) | ${cat_count[timestamp]:-0} | $(numfmt --to=iec ${cat_size[timestamp]:-0} 2>/dev/null || echo "0B") | TSA/区块链 |"
-  echo "| notarized (公证) | ${cat_count[notarized]:-0} | $(numfmt --to=iec ${cat_size[notarized]:-0} 2>/dev/null || echo "0B") | 公证处存证 |"
+  echo "| incident (事发) | $cat_count_incident | $(numfmt --to=iec $cat_size_incident 2>/dev/null || echo "0B") | 暴力清退相关 |"
+  echo "| periodic (周期) | $cat_count_periodic | $(numfmt --to=iec $cat_size_periodic 2>/dev/null || echo "0B") | 周/月/季度证据 |"
+  echo "| timestamp (时间戳) | $cat_count_timestamp | $(numfmt --to=iec $cat_size_timestamp 2>/dev/null || echo "0B") | TSA/区块链 |"
+  echo "| notarized (公证) | $cat_count_notarized | $(numfmt --to=iec $cat_size_notarized 2>/dev/null || echo "0B") | 公证处存证 |"
   echo "| other | ${cat_count[other]:-0} | $(numfmt --to=iec ${cat_size[other]:-0} 2>/dev/null || echo "0B") | 其他 |"
   echo ""
   echo "## 2. 周期证据(默认时序)"
