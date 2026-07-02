@@ -1,10 +1,65 @@
-# 通用岗位 evidence skill (General Office Roles)
+---
+name: general-evidence
+description: 人事/行政/财务/销售/市场/运营/法务/教师/医护/公务员 等通用岗位专属证据维度 - 邮件/审批/沟通/物理证据。Role-specific evidence dimensions for HR, Admin, Finance, Sales, Marketing, Ops, Legal, Teacher, Doctor, Civil Servant — emails, approvals, communications, physical traces.
+metadata:
+  type: sub-skill
+  parent: anti-violent-layoff-evidence
+  roles:
+    - hr
+    - admin
+    - finance
+    - sales
+    - marketing
+    - operations
+    - customer-service
+    - legal
+    - design
+    - teacher
+    - medical-staff
+    - civil-servant
+  jurisdiction: 中国大陆 / China Mainland (primary)
+  triggers:
+    - 人事证据
+    - 行政证据
+    - 销售证据
+    - 财务证据
+    - HR evidence
+    - admin evidence
+    - sales evidence
+    - finance evidence
+  see_also:
+    - ../../SKILL.md
+    - ../developer/SKILL.md
+    - ../../templates/incident-runbook.md
+    - ../../scripts/weekly-hash.sh
+  maintainer: @test-maintainer
+  version: 1.0.0
+  updated: 2026-07-02
+---
 
-> 适用岗位:**人事 HR / 行政 / 财务 / 销售 / 市场 / 运营 / 客服 / 法务 / 设计 / 教师 / 医护 / 公务员 / 传统行业非数字化岗**
-> 共同特征:工作产物**部分数字化** + **大量纸质/沟通痕迹** → 证据更依赖**沟通留痕、人际互证、流程文书**。
+# 🏢 通用岗位 evidence skill / General Office Roles Evidence
+
+> **适用岗位 / Applicable Roles**:**人事 HR / 行政 / 财务 / 销售 / 市场 / 运营 / 客服 / 法务 / 设计 / 教师 / 医护 / 公务员 / 传统行业非数字化岗**
+> **HR / Admin / Finance / Sales / Marketing / Operations / Customer Service / Legal / Design / Teacher / Doctor / Civil Servant / Traditional non-digital roles**
 >
-> **关键差异**:通用岗的核心证据在**审批单、合同、会议纪要、上级评价、同事证言**; 而非代码、监控。
-> 因此本 skill 重点:**保住邮件、文档、沟通** = 保住工作量和价值。
+> **共同特征 / Common Trait**:工作产物**部分数字化** + **大量纸质/沟通痕迹** → 证据更依赖**沟通留痕、人际互证、流程文书**。
+> **Work products partially digital + heavy paper/communication traces** → evidence relies on **communication records, peer witnesses, process documents**.
+>
+> **关键差异 / Key Difference**:通用岗的核心证据在**审批单、合同、会议纪要、上级评价、同事证言**; 而非代码、监控。
+> **Core evidence**: approval forms, contracts, meeting minutes, supervisor evaluations, peer testimony — not code or monitoring.
+>
+> **本 skill 重点 / Focus**:**保住邮件、文档、沟通** = 保住工作量和价值。
+> **Preserve emails, documents, communications = preserve your contribution and value.**
+
+## 🔗 联动 / Links
+
+- **主 skill** / Main skill:[`../../SKILL.md`](../../SKILL.md)
+- **同侪子 skill** / Peer sub-skill:[`../developer/SKILL.md`](../developer/SKILL.md)
+- **应急 runbook** / Incident runbook:[`../../templates/incident-runbook.md`](../../templates/incident-runbook.md)
+- **周维护** / Weekly maintenance:[`../../scripts/weekly-hash.sh`](../../scripts/weekly-hash.sh)
+- **仓库** / Repository:`https://github.com/<your-org>/anti-violent-layoff-evidence`
+
+---
 
 ---
 

@@ -1,10 +1,99 @@
-# 反暴力裁员证据链 skills (Anti-Violent-Layoff Evidence Chain)
+---
+name: anti-violent-layoff-evidence
+description: 防御性技能合集,在被暴力裁员、锁 SSO/电脑/物理清退时保住工作证明并索取应得赔偿。Defensive skill collection that preserves work evidence when facing sudden account lockout, computer seizure, and violent dismissal, so workers can still claim lawful severance. (主 skill / Main skill)
+metadata:
+  type: skill
+  jurisdiction: 中国大陆 / China Mainland (primary)
+  triggers:
+    - 反暴力裁员
+    - 工作证明
+    - 证据保留
+    - 锁号
+    - 暴力清退
+    - 经济补偿
+    - 2N 赔偿
+    - 仲裁
+    - evidence preservation
+    - layoff
+    - severance
+  see_also:
+    - skills/developer/SKILL.md
+    - skills/general/SKILL.md
+    - templates/incident-runbook.md
+    - scripts/weekly-hash.sh
+  maintainer: @test-maintainer
+  version: 1.0.0
+  updated: 2026-07-02
+---
 
-> 防御场景:被暴力裁员时,雇主锁 SSO 账号、关电脑、收缴 U 盾、物理清退后,劳动者**仍能**证明工作内容/时间/强度/成果,并据此索取应得赔偿。
+# 🛡️ 反暴力裁员证据链 / Anti-Violent-Layoff Evidence Chain
+
+> **Defensive toolkit**:在被暴力裁员时,雇主锁 SSO 账号、关电脑、收缴 U 盾、物理清退后,劳动者**仍能**证明工作内容/时间/强度/成果,并据此索取应得赔偿。
 >
-> 设计哲学:**事前预防** > 事后补救;**独立存储** > 依赖雇主系统;**多维冗余** > 单点证据;**可信可采** > 形式堆砌。
->
-> **法律边界声明**:本文仅整理证据保留方法,不构成法律意见,不教唆对抗、伪造、报复或侵犯商业秘密。具体案件请咨询执业律师。
+> **Defensive skill collection**:When employers suddenly lock SSO accounts, seize computers, take back hardware, and physically remove you, you should still be able to prove what you worked on — and claim the compensation you deserve.
+
+## 🇨🇳 中文
+
+**设计哲学 / Design Philosophy**:
+- **事前预防** > 事后补救 — Prevention > cure
+- **独立存储** > 依赖雇主系统 — Independent storage > employer systems
+- **多维冗余** > 单点证据 — Multi-dimensional redundancy > single point
+- **可信可采** > 形式堆砌 — Credible & admissible > formal accumulation
+
+**法律边界 / Legal Boundary**:
+- 本 skill 仅整理证据保留方法,**不构成法律意见**,不教唆对抗、伪造、报复或侵犯商业秘密。
+- This skill provides evidence-preservation methods only,**not legal advice**.
+- 具体案件请咨询执业律师。Consult a licensed attorney for your case.
+
+## 🇺🇸 English
+
+**Design Philosophy**:
+- **Prevention** > cure
+- **Independent storage** > employer systems
+- **Multi-dimensional redundancy** > single point
+- **Credible & admissible** > formal accumulation
+
+**Legal Boundary**:
+- This skill provides evidence-preservation methods only,**not legal advice**.
+- Does not encourage retaliation, fabrication, or trade-secret theft.
+- Consult a licensed attorney for your case.
+
+---
+
+## 🔗 子 skill 导航 / Sub-skills Navigation
+
+| 你是谁 / You are | 看这里 / Read |
+|------------------|---------------|
+| 程序员/测试/产品/DevOps/SRE/数据/算法/安全 / Developer, QA, PM, DevOps, SRE, Data, Algo, Security | [**`skills/developer/SKILL.md`**](skills/developer/SKILL.md) |
+| 人事/行政/财务/销售/市场/运营/法务/教师/医护/公务员 / HR, Admin, Finance, Sales, Marketing, Ops, Legal, Teacher, Doctor, Civil Servant | [**`skills/general/SKILL.md`**](skills/general/SKILL.md) |
+
+## 🛠️ 工具脚本 / Tool Scripts
+
+| 用途 / Purpose | 命令 / Command |
+|---------------|---------------|
+| 周维护 / Weekly maintenance | `bash scripts/weekly-hash.sh` |
+| 扫描痕迹 / Scan traces | `bash scripts/evidence-scanner.sh --json` |
+| 收集证据 / Collect | `bash scripts/evidence-collector.sh --apply` |
+| 汇总报告 / Aggregate | `bash scripts/evidence-aggregator.sh` |
+| 应急工具 / Incident toolkit | `bash scripts/incident-tools.sh` |
+
+## 📋 模板 / Templates
+
+| 用途 / Purpose | 文件 / File |
+|---------------|------------|
+| 事发当日 runbook / 60s runbook | [`templates/incident-runbook.md`](templates/incident-runbook.md) |
+| Hash 登记模板 / Hash manifest | [`evidence-checklist/manifest.csv.template`](evidence-checklist/manifest.csv.template) |
+
+## 🔗 仓库元信息 / Repo Meta
+
+- **仓库地址 / Repository**:`https://github.com/<your-org>/anti-violent-layoff-evidence`
+- **作者 / Maintainer**:@test-maintainer
+- **当前版本 / Current version**:`v1.0.0`
+- **更新日期 / Last updated**:`2026-07-02`
+- **许可证 / License**:[MIT](LICENSE) + 法律免责
+- **完整说明 / Full docs**:`README.md` / `CONTRIBUTING.md` / `SECURITY.md` / `CHANGELOG.md`
+
+---
 
 ---
 

@@ -1,3 +1,9 @@
+# evidence-checklist/manifest.csv.template
+# 用途:每周 hash 登记,事后交付律师
+# 由 scripts/weekly-hash.sh 自动追加
+# 列含义:timestamp | ISO week | 相对路径 | 字节数 | SHA-256 | 来源 | 强制力星级 | 备注
+# Repo: https://github.com/<your-org>/anti-violent-layoff-evidence
+# Version: 1.0.0
 timestamp,week,file,size,sha256,source,force_level,note
 2026-01-01T09:00:00,2026-W01,evidence/2026-Q1/工资条-01.jpg,125000,a1b2c3d4...,钉钉,★★★★,月初工资条
 2026-01-31T18:30:00,2026-W05,evidence/2026-Q1/个税-2025年.pdf,820000,e5f6g7h8...,个税APP,★★★★★,年度汇算

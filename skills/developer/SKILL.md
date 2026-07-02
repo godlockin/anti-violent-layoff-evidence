@@ -1,10 +1,62 @@
-# 程序员岗位 evidence skill (Developer & Tech Roles)
+---
+name: developer-evidence
+description: 程序员/测试/产品/DevOps/SRE/数据/算法/安全 岗位专属证据维度 - 代码 commit/部署监控/工单/值班。Role-specific evidence dimensions for Developer, QA, PM, DevOps, SRE, Data, Algo, Security — code commits, deployment logs, tickets, on-call records.
+metadata:
+  type: sub-skill
+  parent: anti-violent-layoff-evidence
+  roles:
+    - developer
+    - qa
+    - product-manager
+    - devops
+    - sre
+    - data-engineer
+    - data-scientist
+    - algo-engineer
+    - security-engineer
+    - it-admin
+  jurisdiction: 中国大陆 / China Mainland (primary)
+  triggers:
+    - 程序员证据
+    - code commit 证据
+    - 部署日志
+    - 值班记录
+    - developer evidence
+    - deployment log
+    - on-call record
+  see_also:
+    - ../../SKILL.md
+    - ../general/SKILL.md
+    - ../../templates/incident-runbook.md
+    - ../../scripts/weekly-hash.sh
+  maintainer: @test-maintainer
+  version: 1.0.0
+  updated: 2026-07-02
+---
 
-> 适用岗位:**研发 / 测试 / 产品 / DevOps / SRE / 数据 / 算法 / 安全 / IT 运维**
-> 共同特征:工作产物**100% 可数字化** → 证据最丰富、最强证据、最容易自证,反而是维权最有利的群体。
+# 💻 程序员岗位 evidence skill / Developer & Tech Roles Evidence
+
+> **适用岗位 / Applicable Roles**:**研发 / 测试 / 产品 / DevOps / SRE / 数据 / 算法 / 安全 / IT 运维**
+> **Developer / QA / PM / DevOps / SRE / Data / Algo / Security / IT Operations**
 >
-> **关键差异**:程序员的核心证据在**代码、commit、部署、监控、值班**; 而非打卡、邮件。
-> 因此本 skill 重点:**保住源代码和部署痕迹** = 保住工作量和价值。
+> **共同特征 / Common Trait**:工作产物**100% 可数字化** → 证据最丰富、最强证据、最容易自证,反而是维权最有利的群体。
+> **Work products 100% digitalizable** → richest evidence, strongest proof, easiest self-defense.
+>
+> **关键差异 / Key Difference**:程序员的核心证据在**代码、commit、部署、监控、值班**; 而非打卡、邮件。
+> **Core evidence**: code, commits, deployments, monitoring, on-call — not check-in or email.
+>
+> **本 skill 重点 / Focus**:**保住源代码和部署痕迹** = 保住工作量和价值。
+> **Preserve source code & deployment traces = preserve your contribution and value.**
+
+## 🔗 联动 / Links
+
+- **主 skill** / Main skill:[`../../SKILL.md`](../../SKILL.md)
+- **同侪子 skill** / Peer sub-skill:[`../general/SKILL.md`](../general/SKILL.md)
+- **应急 runbook** / Incident runbook:[`../../templates/incident-runbook.md`](../../templates/incident-runbook.md)
+- **周维护** / Weekly maintenance:[`../../scripts/weekly-hash.sh`](../../scripts/weekly-hash.sh)
+- **仓库** / Repository:`https://github.com/<your-org>/anti-violent-layoff-evidence`
+
+---
 
 ---
 

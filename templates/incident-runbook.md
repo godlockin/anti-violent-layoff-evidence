@@ -1,6 +1,17 @@
-# 事发当日 Runbook(60 秒启动)
+---
+name: incident-runbook
+description: 事发当日 60 秒应急 runbook - 可打印版。60-second emergency runbook for the day of incident, printable.
+metadata:
+  type: template
+  parent: anti-violent-layoff-evidence
+  version: 1.0.0
+  updated: 2026-07-02
+---
+
+# 🚨 事发当日 Runbook / 60-second Emergency Runbook (60 秒启动)
 
 > 打印一份放在家里 + 一份放私人保险箱 + 一份放信任的家人物业。
+> Print one copy at home + one in personal safe + one with trusted family member.
 
 ---
 

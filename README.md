@@ -1,13 +1,21 @@
-# Anti-Violent-Layoff Evidence (AVLE) / 反暴力裁员证据链
+<div align="center">
 
-> **防御性技能合集**:在雇主单方面锁号、关电脑、收缴 U 盾、物理清退时,劳动者**仍能**证明工作内容、时间、地点、强度、成果,并据此索取应得赔偿。
+# 🛡️ Anti-Violent-Layoff Evidence (AVLE) / 反暴力裁员证据链
+
+> **在雇主单方面锁号、关电脑、收缴 U 盾、物理清退时,劳动者仍能证明工作内容、时间、地点、强度、成果,并据此索取应得赔偿。**
 >
-> **Skill Collection**:Defensive toolkit for workers facing sudden account lockouts, computer seizure, and violent dismissal. Provides evidence-gathering frameworks, automated tools, and best practices across multiple job roles.
+> **Defensive skill collection for workers facing sudden account lockouts, computer seizure, and violent dismissal.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Evidence Tools](https://img.shields.io/badge/evidence-tools-blue.svg)](scripts/)
 [![Skills: 2](https://img.shields.io/badge/skills-developer%20%2B%20general-green.svg)](skills/)
+[![Scripts: 5](https://img.shields.io/badge/scripts-5-blue.svg)](scripts/)
+[![Jurisdiction: CN](https://img.shields.io/badge/jurisdiction-CN%20%7C%20HK%20%7C%20SG%20%7C%20US-lightgrey.svg)](#-适用法律体系--jurisdictions)
+[![Version: v1.0.0](https://img.shields.io/badge/version-v1.0.0-orange.svg)](CHANGELOG.md)
+
+[English](#-english) | [中文](#-中文)
+
+</div>
 
 ---
 
@@ -15,22 +23,19 @@
 
 > **本仓库仅整理证据保留方法,不构成法律意见,不教唆对抗、伪造、报复或侵犯商业秘密。具体案件请咨询执业律师。**
 >
-> **This repo provides evidence-preservation methods only, not legal advice. Do not use for retaliation, evidence fabrication, or trade-secret theft. Consult a licensed attorney for your case.**
+> **This repository provides evidence-preservation methods only, not legal advice. Do not use for retaliation, evidence fabrication, or trade-secret theft. Consult a licensed attorney for your case.**
 
-合法用途 (Lawful uses):
-- ✅ 完整保留属于你的工作产物副本
-- ✅ 主张自身合法权益(N、N+1、2N、加班费)
-- ✅ 走劳动监察、仲裁、诉讼
-- ✅ 用公开合法渠道监督雇主
-
-禁止行为 (Prohibited):
-- ❌ 偷窃商业秘密、客户名单
-- ❌ 报复性删库、勒索、骚扰
-- ❌ 删除公司合法资产
-- ❌ 伪造证据
-- ❌ 以曝光要挟敲诈勒索
+| 合法用途 (Lawful uses) ✅ | 禁止行为 (Prohibited) ❌ |
+|------------------------|------------------------|
+| 完整保留属于你的工作产物副本 | 偷窃商业秘密、客户名单 |
+| 主张自身合法权益(N、N+1、2N、加班费) | 报复性删库、勒索、骚扰 |
+| 走劳动监察、仲裁、诉讼 | 删除公司合法资产 |
+| 用公开合法渠道监督雇主 | 伪造证据 |
+| 推动职场透明化 | 以曝光要挟敲诈勒索 |
 
 ---
+
+# 🇨🇳 中文
 
 ## 🎯 核心目标 / Mission
 
@@ -38,18 +43,51 @@
 
 | # | 攻击面 | 雇主动作 | 我们反制 |
 |---|--------|---------|---------|
-| **I1** | **数字锁死** | 锁 SSO、删 SaaS、清云盘 | 镜像推个人云 + GitHub |
-| **I2** | **物理剥夺** | 收电脑、U 盾、工牌 | 物理证据位 + 同事互证 |
-| **I3** | **否认** | "他没做过" / "工作时间不饱和" | 多源时戳证据 + 第三方存证 |
+| **I1 数字锁死** | SSO/SaaS/云盘 | 锁号、删数据、清云盘 | 镜像推个人云 + GitHub |
+| **I2 物理剥夺** | 电脑、U 盾、工牌 | 收缴、收门禁、扣物品 | 物理证据位 + 同事互证 |
+| **I3 否认** | 工作内容、时间、强度 | "他没做过" / "工作时间不饱和" | 多源时戳证据 + 第三方存证 |
 
----
+## 🧠 核心方法论
 
-## 📦 仓库结构 / Repository Structure
+### 证据金字塔 (Evidence Pyramid)
+```
+                    ┌──── 顶层 ────┐
+                    │ 公证处存证   │ 可信度 ★★★★★
+                    ├──── 强证据 ──┤
+                    │ 第三方平台   │ (权利卫士 / 至信链)
+                    │   时间戳证据 │
+                    ├──── 主证据 ──┤
+                    │ 雇主系统导出 │ (来自企业 SaaS)
+                    │ (邮件/工单)  │ 真实性可质证
+                    ├──── 辅证据 ──┤
+                    │ 截图/录屏    │ ⚠ 必须多源印证
+                    │ 自存笔记     │
+                    ├──── 兜底 ────┤
+                    │ 当事人陈述   │ 自述证据,效力最低
+                    └─────────────┘
+```
+**关键原则**:永远不只存一种。任何证据单独看都可能"瑕疵",但 3 个以上独立渠道交叉印证 → 法官/仲裁员会认定"高度盖然性"标准(民诉法 §108)。
+
+### 时间三段论
+| 段 | 时间窗 | 心态 | 重点 |
+|----|--------|------|------|
+| **黄金预防期** | 入职 → 收到裁员风声 | 主动 | 大规模布点 |
+| **黄金取证期** | 接到通知 → 锁号(24-72h) | 紧张 | 全维度导出 + 镜像备份 |
+| **救济期** | 锁号后 → 仲裁 1 年时效 | 理性 | 公证 / 区块链固证 / 律师 |
+
+### 三大不变量 (Invariants)
+| # | 不变量 | 攻击方诉求 | 防御方反制 |
+|---|--------|-----------|-----------|
+| I1 | **事实可还原** | "他没做过" | 多源时戳证据 |
+| I2 | **身份可识别** | "这是他私人行为" | 域名+工号+岗位职责匹配 |
+| I3 | **链条可验证** | "证据后期伪造" | hash + 时间戳 + 第三方存证 |
+
+## 📦 仓库结构
 
 ```
 anti-violent-layoff-evidence/
 ├── README.md                          ← 你在这里
-├── LICENSE                            ← MIT
+├── LICENSE                            ← MIT + 免责声明
 ├── CONTRIBUTING.md                    ← 贡献指南
 ├── CHANGELOG.md                       ← 变更日志
 ├── SECURITY.md                        ← 安全策略
@@ -59,8 +97,8 @@ anti-violent-layoff-evidence/
 │
 ├── scripts/                           ← 可执行工具
 │   ├── weekly-hash.sh                 ← 周维护 (30 秒)
-│   ├── evidence-scanner.sh            ← 扫描本地痕迹
-│   ├── evidence-collector.sh          ← 选择性收集
+│   ├── evidence-scanner.sh            ← 扫描本地痕迹 (只读)
+│   ├── evidence-collector.sh          ← 选择性收集 + 加密打包
 │   ├── evidence-aggregator.sh         ← 生成 case-brief.md
 │   └── incident-tools.sh              ← 60 秒应急工具
 │
@@ -76,23 +114,21 @@ anti-violent-layoff-evidence/
     └── general/SKILL.md               ← 人事/行政/财务/销售 等
 ```
 
----
+## 🚀 快速开始
 
-## 🚀 快速开始 / Quick Start
-
-### 1. 预防期(现在就开始,不需要任何背景)
+### 1. 预防期(现在就开始)
 
 ```bash
-# 1) 克隆本仓库(或直接下载)
+# 1) 克隆本仓库
 git clone https://github.com/<your-org>/anti-violent-layoff-evidence.git
 cd anti-violent-layoff-evidence
 
 # 2) 建立你的证据目录
-mkdir -p ~/evidence/{2026-Q1,incident,timestamp,notarized}
+mkdir -p ~/evidence/{periodic,incident,timestamp,notarized}
 
 # 3) 配置个人云同步
-# 推荐:坚果云 / 百度网盘 / OneDrive 个人版 / iCloud / Google Drive
-# 不要用:公司提供的云盘、公司配的 NAS、公司域账号下的任何 SaaS
+# ✅ 推荐:坚果云 / 百度网盘 / OneDrive 个人版 / iCloud / Google Drive
+# ❌ 不要用:公司提供的云盘、公司配的 NAS、公司域账号下的任何 SaaS
 
 # 4) 设置周维护 cron (每周五 18:00)
 echo "0 18 * * 5 bash $(pwd)/scripts/weekly-hash.sh" | crontab -
@@ -129,60 +165,17 @@ bash scripts/evidence-collector.sh --apply
 bash scripts/evidence-aggregator.sh
 ```
 
----
+## 🛠️ 工具速查
 
-## 🛠️ 工具速查 / Tool Reference
+| 脚本 | 用途 | 何时跑 | 默认行为 |
+|------|------|--------|---------|
+| [`scripts/weekly-hash.sh`](scripts/weekly-hash.sh) | 每周五自动 hash 登记 | 每周(预防) | 写 manifest.csv |
+| [`scripts/evidence-scanner.sh`](scripts/evidence-scanner.sh) | 扫描本地可作为证据的痕迹 | 每月 / 准备期 | 只读 |
+| [`scripts/evidence-collector.sh`](scripts/evidence-collector.sh) | 按计划选择性收集 | 准备期 / 事发前 | dry-run,`--apply` 加密打包 |
+| [`scripts/evidence-aggregator.sh`](scripts/evidence-aggregator.sh) | 汇总所有 manifest 出 case-brief | 律师面谈前 | 写 case-brief.md |
+| [`scripts/incident-tools.sh`](scripts/incident-tools.sh) | 60 秒应急工具合集 | 事发当日 | 显示 checklist |
 
-| 脚本 | 用途 | 何时跑 |
-|------|------|--------|
-| `scripts/weekly-hash.sh` | 每周五自动 hash 登记 | 每周(预防) |
-| `scripts/evidence-scanner.sh` | 扫描本地可作为证据的痕迹 | 每月 / 准备期 |
-| `scripts/evidence-collector.sh` | 按计划选择性收集(只读) | 准备期 / 事发前 |
-| `scripts/evidence-aggregator.sh` | 汇总所有 manifest 出 case-brief | 律师面谈前 |
-| `scripts/incident-tools.sh` | 60 秒应急工具合集 | 事发当日 |
-
----
-
-## 📚 核心概念 / Core Concepts
-
-### 证据金字塔 (Evidence Pyramid)
-
-```
-                    ┌──── 顶层 ────┐
-                    │ 公证处存证   │ 可信度 ★★★★★
-                    ├──── 强证据 ──┤
-                    │ 第三方平台   │ (权利卫士 / 至信链)
-                    │   时间戳证据 │
-                    ├──── 主证据 ──┤
-                    │ 雇主系统导出 │ (来自企业 SaaS)
-                    │ (邮件/工单)  │ 真实性可质证
-                    ├──── 辅证据 ──┤
-                    │ 截图/录屏    │ ⚠ 必须多源印证
-                    │ 自存笔记     │
-                    ├──── 兜底 ────┐
-                    │ 当事人陈述   │ 自述证据,效力最低
-                    └─────────────┘
-```
-
-### 时间三段论
-
-| 段 | 时间窗 | 心态 | 重点 |
-|----|--------|------|------|
-| **黄金预防期** | 入职 → 收到裁员风声 | 主动 | 大规模布点 |
-| **黄金取证期** | 接到通知 → 锁号(24-72h) | 紧张 | 全维度导出 + 镜像备份 |
-| **救济期** | 锁号后 → 仲裁 1 年时效 | 理性 | 公证 / 区块链固证 / 律师 |
-
-### 三大不变量 (Invariants)
-
-| # | 不变量 | 攻击方诉求 | 防御方反制 |
-|---|--------|-----------|-----------|
-| I1 | **事实可还原** | "他没做过" | 多源时戳证据 |
-| I2 | **身份可识别** | "这是他私人行为" | 域名+工号匹配 |
-| I3 | **链条可验证** | "证据后期伪造" | hash + 时间戳 + 公证 |
-
----
-
-## 🌍 适用法律体系 / Jurisdictions
+## 🌍 适用法律体系
 
 | 地区 | 法律基础 | 时效 |
 |------|---------|------|
@@ -191,11 +184,23 @@ bash scripts/evidence-aggregator.sh
 | **新加坡** | Employment Act | 6 个月 |
 | **美国** | Title VII / FLSA / WARN Act | 各州不同 |
 
-> 本仓库以**中国大陆**法律为主。其他法域的子 skill 见 [issues](https://github.com/.../issues)。
+> 本仓库以**中国大陆**法律为主。其他法域的子 skill 见 [issues](https://github.com/<your-org>/anti-violent-layoff-evidence/issues)。
 
----
+## 📚 关键术语速查
 
-## 🤝 贡献 / Contributing
+| 术语 | 含义 |
+|------|------|
+| **N** | 经济补偿金(每满一年支付一个月工资) |
+| **N+1** | 代通知金 + 经济补偿,协商一致解除 |
+| **2N** | 违法解除赔偿金(2 倍经济补偿) |
+| **加班费** | 工作日 150%、周末 200%、法定节假日 300% |
+| **未签合同二倍工资** | 《劳动合同法》§82,入职 1 个月未签起算 |
+| **竞业限制** | 离职后不得超过 2 年,公司必须按月支付补偿金 |
+| **证据保全** | 公证处、第三方存证平台对证据固定 |
+| **司法链** | 蚂蚁、腾讯等法院认可的区块链存证 |
+| **TSA 时间戳** | 联合信任时间戳,免费的 RFC 3161 标准时间戳 |
+
+## 🤝 贡献
 
 我们欢迎各种形式的贡献:
 
@@ -207,21 +212,20 @@ bash scripts/evidence-aggregator.sh
 
 请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。
 
----
-
-## 📋 路线图 / Roadmap
+## 📋 路线图
 
 ### v1.0(本版本 2026-07-02)
 - ✅ 主 skill (SKILL.md)
 - ✅ 程序员/通用岗子 skill
 - ✅ 5 个工具脚本
 - ✅ 应急 runbook
+- ✅ 中英双语 README
 
 ### v1.1(计划)
 - ⏳ 销售岗子 skill
 - ⏳ 财务岗子 skill
 - ⏳ 美/港/新法域适配
-- ⏳ 英文 README
+- ⏳ 英文 README 完整版
 - ⏳ 律师 / 法律援助资源地图
 
 ### v2.0(远期)
@@ -230,9 +234,7 @@ bash scripts/evidence-aggregator.sh
 - ⏳ 移动端 App(本地优先)
 - ⏳ 工会 / 行业集体行动案例库
 
----
-
-## 🙏 致谢 / Acknowledgments
+## 🙏 致谢
 
 - 中国法律服务网 `https://12348.gov.cn/`
 - 12333 劳动维权热线
@@ -240,22 +242,183 @@ bash scripts/evidence-aggregator.sh
 - 联合信任时间戳(TSA)
 - 所有在职场被不公对待过、并选择合法维权的伙伴
 
----
-
-## 📜 许可证 / License
-
-[MIT License](LICENSE) - 自由使用、修改、分发,只要保留版权声明。
-
----
-
-## ⚖️ 一句话原则 / One-line Principle
+## ⚖️ 一句话原则
 
 > **永远不要把所有证据放在别人的服务器上。**
->
-> **Never store all your evidence on someone else's server.**
+> **永远不要相信"承诺给 N 你签了再说"。**
+> **永远不要在情绪激动时做决定。**
 
 ---
 
-**仓库维护 / Maintained by**:@test-maintainer  
-**当前版本 / Current version**:v1.0  
-**最后更新 / Last updated**:2026-07-02
+# 🇺🇸 English
+
+## 🎯 Mission
+
+When an employer suddenly locks your SSO, seizes your computer, takes back your Yubikey, and physically removes you, you should still be able to **prove what you worked on, when, where, how hard, and what you produced** — and claim the compensation you deserve.
+
+## 🧠 Core Methodology
+
+### Evidence Pyramid
+```
+                    ┌──── TOP ────┐
+                    │ Notarization │ Credibility ★★★★★
+                    ├── STRONG ────┤
+                    │ 3rd-party    │ (Rights-Protector / ZXX-Chain)
+                    │ timestamping │
+                    ├── PRIMARY ───┤
+                    │ Employer SaaS│ (Emails / Tickets)
+                    │ exports      │ Authenticity disputable
+                    ├── SUPPORT ───┤
+                    │ Screenshots  │ ⚠ Need cross-validation
+                    │ Self notes   │
+                    ├── FALLBACK ──┤
+                    │ Self-statement│ Lowest weight
+                    └──────────────┘
+```
+**Key principle**: never store only one copy. Any single piece of evidence may be "flawed", but 3+ independent cross-validating sources reach the **"preponderance of evidence"** standard (PRC Civil Procedure Law §108).
+
+### Three-Phase Timeline
+| Phase | Time Window | Mindset | Focus |
+|-------|------------|---------|-------|
+| **Prevention** | Hire date → Layoff rumors | Proactive | Mass deployment |
+| **Evidence Grab** | Notice → Account lock (24-72h) | Tense | Full export + mirror backup |
+| **Remedy** | Lockout → 1-year arbitration limit | Rational | Notarize / chain custody / lawyer |
+
+### Three Invariants
+| # | Invariant | Attacker's claim | Defender's response |
+|---|-----------|-----------------|---------------------|
+| I1 | **Fact re-constructible** | "He didn't do it" | Multi-source timestamped evidence |
+| I2 | **Identity identifiable** | "That was his private act" | Domain + employee ID + role match |
+| I3 | **Chain verifiable** | "Evidence forged later" | hash + timestamp + 3rd-party custody |
+
+## 📦 Repository Structure
+
+Same as Chinese section above.
+
+## 🚀 Quick Start
+
+```bash
+# 1) Clone
+git clone https://github.com/<your-org>/anti-violent-layoff-evidence.git
+cd anti-violent-layoff-evidence
+
+# 2) Set up evidence dir
+mkdir -p ~/evidence/{periodic,incident,timestamp,notarized}
+
+# 3) Configure personal cloud sync
+# ✅ OK: Nutstore / Baidu Pan / OneDrive Personal / iCloud / Google Drive
+# ❌ NO: Company cloud, Company NAS, anything under company SSO
+
+# 4) Schedule weekly maintenance
+echo "0 18 * * 5 bash $(pwd)/scripts/weekly-hash.sh" | crontab -
+```
+
+### Pick your role-specific skill
+
+| You are | Read |
+|---------|------|
+| Developer / QA / PM / DevOps / SRE / Data / Algo / Security | [`skills/developer/SKILL.md`](skills/developer/SKILL.md) |
+| HR / Admin / Finance / Sales / Marketing / Ops / Legal / Teacher / Doctor / Civil Servant | [`skills/general/SKILL.md`](skills/general/SKILL.md) |
+
+## 🛠️ Tool Reference
+
+| Script | Purpose | When to run | Default |
+|--------|---------|-------------|---------|
+| `scripts/weekly-hash.sh` | Weekly hash manifest | Weekly (prevention) | Writes manifest.csv |
+| `scripts/evidence-scanner.sh` | Scan local traces | Monthly / preparation | Read-only |
+| `scripts/evidence-collector.sh` | Selective collection | Preparation / pre-incident | dry-run, `--apply` encrypts |
+| `scripts/evidence-aggregator.sh` | Aggregate into case-brief | Before lawyer meeting | Writes case-brief.md |
+| `scripts/incident-tools.sh` | 60-second emergency toolkit | Day of incident | Checklist display |
+
+## 🌍 Jurisdictions
+
+| Region | Legal basis | Limitation |
+|--------|-------------|------------|
+| **Mainland China** | Labor Contract Law, Labor Dispute Mediation & Arbitration Law, Civil Procedure Law §63 | 1-year arbitration |
+| **Hong Kong** | Employment Ordinance | 6-12 months |
+| **Singapore** | Employment Act | 6 months |
+| **USA** | Title VII / FLSA / WARN Act | Varies by state |
+
+## 📚 Key Terms
+
+| Term | Meaning |
+|------|---------|
+| **N** | Severance pay (1 month salary per year of service) |
+| **N+1** | Pay-in-lieu of notice + severance (mutual termination) |
+| **2N** | Compensation for illegal termination (2x severance) |
+| **Overtime** | Weekday 150% / Weekend 200% / Holiday 300% |
+| **Double wages** | For unsigned contract (PRC Labor Contract Law §82) |
+| **Non-compete** | Max 2 years post-termination, requires monthly compensation |
+| **Evidence preservation** | Notarization / 3rd-party custody platforms |
+| **Judicial chain** | Court-recognized blockchain (Ant Group, Tencent) |
+| **TSA timestamp** | Free RFC 3161 timestamp from UTCS |
+
+## 🤝 Contributing
+
+We welcome:
+
+- New role-specific skills (doctor / lawyer / teacher / civil servant, etc.)
+- New jurisdictions (US / HK / SG / UK / DE adaptations)
+- New tool scripts (automated export, evidence verification)
+- Documentation improvements (translations, diagrams, case studies)
+- Legal opinions (disclaimer: contributor content is reference only)
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+## 📋 Roadmap
+
+### v1.0 (this release, 2026-07-02)
+- ✅ Main skill (SKILL.md)
+- ✅ Developer + General role skills
+- ✅ 5 tool scripts
+- ✅ Emergency runbook
+- ✅ Bilingual README
+
+### v1.1 (planned)
+- ⏳ Sales role skill
+- ⏳ Finance role skill
+- ⏳ US / HK / SG jurisdiction adaptation
+- ⏳ Full English README expansion
+- ⏳ Lawyer / legal aid resource map
+
+### v2.0 (long-term)
+- ⏳ Cross-jurisdiction arbitration templates
+- ⏳ Blockchain custody SDK wrapper
+- ⏳ Mobile app (local-first)
+- ⏳ Union / industry collective action case library
+
+## 🙏 Acknowledgments
+
+- China Legal Service Network `https://12348.gov.cn/`
+- 12333 Labor Rights Hotline
+- Rights-Protector / ZXX-Chain (blockchain custody)
+- UTCS (free TSA timestamping)
+- All workers who have been treated unfairly and chose the legal path
+
+## ⚖️ One-line Principle
+
+> **Never store all your evidence on someone else's server.**
+> **Never sign "trust me, you'll get N" without a lawyer's review.**
+> **Never make decisions in emotional heat.**
+
+---
+
+## 📜 License
+
+[MIT License](LICENSE) — free to use, modify, distribute, with copyright notice preserved.
+
+> ⚠️ See LICENSE for full disclaimer. This software is provided for lawful evidence preservation only.
+
+---
+
+<div align="center">
+
+**维护者 / Maintained by**: [@test-maintainer](https://github.com/<your-org>)  
+**版本 / Version**:`v1.0.0`  
+**最后更新 / Last updated**:`2026-07-02`  
+**报告问题 / Report issues**:[github.com/<your-org>/anti-violent-layoff-evidence/issues](https://github.com/<your-org>/anti-violent-layoff-evidence/issues)  
+**安全披露 / Security disclosure**:[SECURITY.md](SECURITY.md)
+
+🛡️ **Together we make the workplace more transparent.**
+
+</div>
