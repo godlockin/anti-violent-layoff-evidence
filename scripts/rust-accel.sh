@@ -49,6 +49,9 @@ _avle_detect_one() {
       procs)  ver="$(procs --version 2>&1 | head -1)";;
       zoxide) ver="$(zoxide --version 2>&1 | head -1)";;
       tokei)  ver="$(tokei --version 2>&1 | head -1)";;
+      sd)     ver="$(sd --version 2>&1 | head -1)";;
+      xh)     ver="$(xh --version 2>&1 | head -1)";;
+      hyperfine) ver="$(hyperfine --version 2>&1 | head -1)";;
       *)      ver="(unknown version)";;
     esac
     echo "$ver" > "$AVLE_TOOL_DIR/$tool.ver"
@@ -157,6 +160,62 @@ p_run() {
   fi
 }
 
+# 加速版本:sed -> sd
+# sd 语法:sd <pattern> <replacement> [file...]
+# 与 sed -i 不同,默认就是 in-place
+s_run() {
+  # s_run <pattern> <replacement> [file...]
+  local pattern="$1"
+  local replacement="$2"
+  shift 2
+  if _avle_tool_has sd; then
+    if [[ $# -eq 0 ]]; then
+      sd "$pattern" "$replacement"
+    else
+      sd "$pattern" "$replacement" "$@"
+    fi
+  else
+    # fallback: BSD/GNU sed 都用 -i '' 兼容方式
+    if [[ $# -eq 0 ]]; then
+      sed "s/$pattern/$replacement/g"
+    else
+      # macOS sed 需要 -i ''  而 GNU sed 只要 -i
+      if [[ "$(uname)" == "Darwin" ]]; then
+        sed -i '' "s/$pattern/$replacement/g" "$@"
+      else
+        sed -i "s/$pattern/$replacement/g" "$@"
+      fi
+    fi
+  fi
+}
+
+# 加速版本:curl -> xh
+# xh 语法:xh [METHOD] URL [OPTIONS]
+x_run() {
+  # x_run [METHOD] URL [OPTIONS...]
+  if _avle_tool_has xh; then
+    xh "$@"
+  else
+    curl "$@"
+  fi
+}
+
+# 性能对比:hyperfine (有则用,无则手动)
+bench_hyperfine() {
+  echo "🚀 性能对比 / hyperfine"
+  echo ""
+  if _avle_tool_has hyperfine; then
+    echo "用 hyperfine 跑:"
+    echo ""
+    hyperfine --warmup 1 --runs 3 \
+      'find . -name "*.md" -type f' \
+      'fd --type f --max-depth 4 "*.md" .' 2>&1 | head -40
+  else
+    echo "⏭️  hyperfine 未安装,fallback 到 manual benchmark"
+    echo "  提示:brew install hyperfine 或 cargo install hyperfine"
+  fi
+}
+
 # 性能对比:find vs fd
 bench_fd() {
   echo "🚀 性能对比 / Benchmark: find vs fd (扫描 ~/)"
@@ -260,37 +319,38 @@ install_hints() {
   echo ""
   echo "## macOS (推荐用 Homebrew)"
   echo ""
-  echo "  brew install fd eza ripgrep bat git-delta dust procs zoxide tokei"
+  echo "  brew install fd eza ripgrep bat git-delta dust procs zoxide tokei sd xh hyperfine"
   echo ""
   echo "## Ubuntu/Debian"
   echo ""
-  echo "  # fd"
-  echo "  sudo apt install fd-find ripgrep bat"
+  echo "  # 主流工具(系统包)"
+  echo "  sudo apt install fd-find ripgrep bat curl"
   echo "  # 其他需要 cargo"
-  echo "  cargo install eza procs dust tokei zoxide"
+  echo "  cargo install eza procs dust tokei zoxide sd xh hyperfine"
   echo ""
   echo "## Arch"
   echo ""
-  echo "  sudo pacman -S fd eza ripgrep bat git-delta dust procs"
+  echo "  sudo pacman -S fd eza ripgrep bat git-delta dust procs zoxide tokei"
+  echo "  # sd / xh / hyperfine 在 AUR"
   echo ""
   echo "## Windows (Scoop)"
   echo ""
-  echo "  scoop install fd eza ripgrep bat delta dust procs"
+  echo "  scoop install fd eza ripgrep bat delta dust procs xh hyperfine"
   echo ""
   echo "## 各工具用途 / What each tool does"
   echo ""
-  echo "  fd       - 替代 find(快 5-10x,语法更友好)"
-  echo "  eza      - 替代 ls(更好看 + git status 集成)"
-  echo "  ripgrep  - 替代 grep -r(快 5-20x,.gitignore 自动跳过)"
-  echo "  bat      - 替代 cat(语法高亮 + 分页)"
-  echo "  delta    - 替代 diff(更好看的 git diff)"
-  echo "  dust     - 替代 du(可视化,看哪个目录占空间)"
-  echo "  procs    - 替代 ps(更好看的进程列表)"
-  echo "  zoxide   - 智能 cd(基于历史)"
-  echo "  tokei    - 代码行数统计(替代 cloc)"
-  echo "  hyperfine - 性能 bench 工具"
-  echo "  sd       - 替代 sed(更易用的文本替换)"
-  echo "  xh       - 替代 curl(更友好的 HTTP 客户端)"
+  echo "  fd         - 替代 find(快 5-10x,语法更友好)"
+  echo "  eza        - 替代 ls(更好看 + git status 集成)"
+  echo "  ripgrep    - 替代 grep -r(快 5-20x,.gitignore 自动跳过)"
+  echo "  bat        - 替代 cat(语法高亮 + 分页)"
+  echo "  delta      - 替代 diff(更好看的 git diff)"
+  echo "  dust       - 替代 du(可视化,看哪个目录占空间)"
+  echo "  procs      - 替代 ps(更好看的进程列表)"
+  echo "  zoxide     - 智能 cd(基于历史)"
+  echo "  tokei      - 代码行数统计(替代 cloc)"
+  echo "  hyperfine  - 性能 bench 工具(自动统计 + 图表)"
+  echo "  sd         - 替代 sed(更易用的文本替换)"
+  echo "  xh         - 替代 curl(更友好的 HTTP 客户端)"
 }
 
 # CLI 入口
@@ -303,6 +363,7 @@ if [[ "${BASH_SOURCE[0]:-$0}" == "${0}" ]]; then
     bench)         shift; bench_all "$@";;
     bench-fd)      shift; bench_fd "$@";;
     bench-rg)      shift; bench_rg "$@";;
+    bench-hyper)   shift; bench_hyperfine "$@";;
     install-hints) install_hints;;
     -h|--help|help)
       cat <<'EOF'
@@ -310,9 +371,10 @@ AVLE rust 加速器
 
 用法:
   bash scripts/rust-accel.sh detect          探测已装工具
-  bash scripts/rust-accel.sh bench           跑性能对比
+  bash scripts/rust-accel.sh bench           跑性能对比(find/fd + grep/rg)
   bash scripts/rust-accel.sh bench-fd        单跑 find vs fd
   bash scripts/rust-accel.sh bench-rg        单跑 grep vs rg
+  bash scripts/rust-accel.sh bench-hyper     用 hyperfine bench(如有)
   bash scripts/rust-accel.sh install-hints   安装提示
 
 作为 lib 引用:
@@ -323,6 +385,8 @@ AVLE rust 加速器
   c_run file                     # bat / cat
   d_run /path                    # dust / du
   p_run                          # procs / ps
+  s_run pat repl [file...]       # sd / sed
+  x_run [method] url             # xh / curl
 EOF
       ;;
     *)
