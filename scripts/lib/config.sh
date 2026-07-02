@@ -46,24 +46,42 @@ export AVLE_WEEKLY_HASH
 # 2) 最近 5 个 git 仓库的 user.email(取最频繁的)
 detect_my_emails() {
   local detected=""
+  local timeout_secs=5
 
-  # 全局 git config
+  # 全局 git config(快速,必跑)
   local global_email
   global_email=$(git config --global user.email 2>/dev/null)
   [[ -n "$global_email" ]] && detected="$global_email"
 
-  # 最近仓库
+  # 最近仓库(限制深度+超时,避免大 ~/ 拖死)
   if [[ -z "$AVLE_MY_EMAILS" ]]; then
     local repo_emails
-    repo_emails=$(find "$HOME" -maxdepth 6 -name ".git" -type d 2>/dev/null \
-      | head -20 \
-      | while read -r d; do
-          (cd "$(dirname "$d")" && git config user.email 2>/dev/null)
-        done \
-      | grep -v "^$" \
-      | sort | uniq -c | sort -rn | head -5 | awk '{print $2}')
+    # macOS/Linux 通用方案:gtimeout / timeout / perl alarm
+    if command -v gtimeout >/dev/null 2>&1; then
+      repo_emails=$(gtimeout "$timeout_secs" find "$HOME" -maxdepth 4 -name ".git" -type d 2>/dev/null | head -10)
+    elif command -v timeout >/dev/null 2>&1; then
+      repo_emails=$(timeout "$timeout_secs" find "$HOME" -maxdepth 4 -name ".git" -type d 2>/dev/null | head -10)
+    else
+      # perl alarm 模拟超时
+      repo_emails=$(perl -e '
+        eval {
+          local $SIG{ALRM} = sub { die "timeout\n" };
+          alarm 5;
+          my @lines = `find $ENV{HOME} -maxdepth 4 -name ".git" -type d 2>/dev/null | head -10`;
+          alarm 0;
+          print @lines;
+        };
+        if ($@ && $@ ne "timeout\n") { die $@; }
+      ' 2>/dev/null)
+    fi
 
-    detected="$detected $repo_emails"
+    if [[ -n "$repo_emails" ]]; then
+      local found
+      found=$(echo "$repo_emails" | while read -r d; do
+        [[ -n "$d" ]] && (cd "$(dirname "$d")" && git config user.email 2>/dev/null)
+      done | grep -v "^$" | sort | uniq -c | sort -rn | head -3 | awk '{print $2}')
+      detected="$detected $found"
+    fi
   fi
 
   if [[ -n "$detected" && -z "$AVLE_MY_EMAILS" ]]; then

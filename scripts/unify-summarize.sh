@@ -252,20 +252,126 @@ EOF
   echo '```'
   echo ""
 
-  # === 9. 关键提醒 ===
-  echo "## 9. 律师面谈前 checklist"
+  # === 9. 关键提醒 + 动态 checklist ===
+  echo "## 9. 律师面谈前 checklist (动态生成)"
+  echo ""
+  echo "### ✅ 已有(自动检测)"
+  echo ""
+  # 动态勾选(根据实际文件)
+  [[ -f "$EVIDENCE_ROOT/case-brief.md" ]] && echo "- [x] case-brief.md 已生成(本文件)" || echo "- [ ] case-brief.md 已生成(本文件)"
+  if compgen -G "$EVIDENCE_ROOT/manifest.csv" >/dev/null || compgen -G "$EVIDENCE_ROOT/*/manifest.csv" >/dev/null; then
+    n=$(find "$EVIDENCE_ROOT" -name "manifest.csv" 2>/dev/null | wc -l | tr -d ' ')
+    echo "- [x] manifest.csv 已生成 ($n 个)"
+  else
+    echo "- [ ] manifest.csv 已生成(0 个)"
+  fi
+  if compgen -G "$EVIDENCE_ROOT/storage-evidence/*.csv" >/dev/null; then
+    n=$(find "$EVIDENCE_ROOT" -name "*.csv" -path "*/storage-evidence/*" 2>/dev/null | wc -l | tr -d ' ')
+    files_n=$(awk -F',' 'NR>1' "$EVIDENCE_ROOT"/storage-evidence/*.csv 2>/dev/null | wc -l | tr -d ' ')
+    echo "- [x] 多存储工作文件已扫描 ($files_n 个文件,$n 个 CSV)"
+  else
+    echo "- [ ] 多存储工作文件扫描 (未跑:bash scripts/storage-evidence-scanner.sh)"
+  fi
+  if compgen -G "$EVIDENCE_ROOT/git-evidence/*.csv" >/dev/null; then
+    n=$(awk -F',' 'NR>1' "$EVIDENCE_ROOT"/git-evidence/*.csv 2>/dev/null | wc -l | tr -d ' ')
+    echo "- [x] git commit 已遍历 ($n 个 commit)"
+  else
+    echo "- [ ] git commit 遍历 (未跑:bash scripts/git-evidence-scanner.sh)"
+  fi
+  if [[ -f "$EVIDENCE_ROOT/holidays/holidays-cn.csv" ]]; then
+    h_n=$(awk -F',' 'NR>1 && $4=="legal"' "$EVIDENCE_ROOT/holidays/holidays-cn.csv" | wc -l | tr -d ' ')
+    echo "- [x] 法定节假日已同步 ($h_n 天)"
+  else
+    echo "- [ ] 法定节假日同步 (未跑:bash scripts/holiday-sync.sh)"
+  fi
+  if [[ -f "$EVIDENCE_ROOT/location-log/locations.csv" ]]; then
+    n=$(tail -n +2 "$EVIDENCE_ROOT/location-log/locations.csv" | wc -l | tr -d ' ')
+    if [[ $n -gt 1 ]]; then
+      echo "- [x] 位置记录已建立 ($n 条)"
+    else
+      echo "- [~] 位置记录只有 1 条 — **建议每天 9/13/18 跑 --auto 持续记录**"
+    fi
+  else
+    echo "- [ ] 位置记录 (未跑:bash scripts/location-worklog.sh --auto)"
+  fi
+  echo ""
+
+  echo "### 📋 待办(手动作业)"
   echo ""
   cat <<'EOF'
-- [ ] case-brief.md 已生成(本文件)
-- [ ] 所有 manifest.csv 已附在律师材料后面
-- [ ] 关键证据已公证(权利卫士/区块链/线下公证)
+- [ ] 关键证据已公证(权利卫士 / 区块链 / 线下公证处)
 - [ ] 已打印纸质备份 1 份
 - [ ] 已拷贝 U 盘 + 信任家人物业
+- [ ] 已加密打包:bash scripts/evidence-collector.sh --apply
 - [ ] 已准备身份证 + 工资条 + 合同副本
-- [ ] 已咨询法律援助中心(免费)
+- [ ] 已准备:个人邮箱 / 个税 APP / 社保 APP / 公积金 APP 截图
+- [ ] 已咨询法律援助中心(免费,12348)
 - [ ] 已查询 12333 政策与时效
+- [ ] 已了解 1 年仲裁时效
 - [ ] 1 年时效警告:剩余 ____ 天
 EOF
+
+  # === 10. 缺口分析(根据实际状态给出建议) ===
+  echo ""
+  echo "## 10. 证据缺口分析(根据本次扫描)"
+  echo ""
+
+  # 分析 git 占比
+  if compgen -G "$EVIDENCE_ROOT/git-evidence/*.csv" >/dev/null; then
+    total=$(awk -F',' 'NR>1' "$EVIDENCE_ROOT"/git-evidence/*.csv 2>/dev/null | wc -l | tr -d ' ')
+    my_n=$(awk -F',' 'NR>1 && $15=="1"' "$EVIDENCE_ROOT"/git-evidence/*.csv 2>/dev/null | wc -l | tr -d ' ')
+    if [[ $total -gt 0 ]]; then
+      pct=$(awk "BEGIN {printf \"%.1f\", 100*$my_n/$total}")
+      if [[ $(awk "BEGIN {print ($pct < 5)}") -eq 1 ]]; then
+        echo "### ⚠️  你的 git commit 占比 < 5% ($my_n / $total = $pct%)"
+        echo ""
+        echo "**结论**:你的代码贡献可能**不在 git 里**。你的岗位可能不是纯程序员(数据/分析/咨询/管理/设计)。"
+        echo ""
+        echo "**建议**:**改用基础层 (general) 证据为主**,包括:"
+        echo "- 邮件全量备份(Thunderbird/Outlook 拉 mbox)"
+        echo "- 个税 / 社保 / 公积金 APP 截图(每月)"
+        echo "- 位置记录(每天 9/13/18 跑 --auto)"
+        echo "- 沟通记录(钉钉/飞书/企微 导出)"
+        echo ""
+        echo "详见 \`skills/general/SKILL.md\`"
+      elif [[ $(awk "BEGIN {print ($pct > 80)}") -eq 1 ]]; then
+        echo "### ✅ 你的 git commit 占比 > 80%($my_n / $total = $pct%)"
+        echo ""
+        echo "**结论**:git 证据是维权核心。推荐用 \`skills/developer/SKILL.md\` 的所有手段。"
+        echo ""
+        echo "**下一步**:加 PR 邮件 / Code Review 截图 / 部署记录等(参见 developer skill §1-3)"
+      else
+        echo "### 你的 git commit 占比: $pct%($my_n / $total)"
+        echo ""
+        echo "混合场景:**git 证据 + 通用证据并用**"
+        echo "- 程序员部分:developer/SKILL.md"
+        echo "- 非 git 工作:general/SKILL.md"
+      fi
+    fi
+  fi
+
+  # 存储扫描覆盖
+  echo ""
+  echo "### 📂 存储扫描覆盖"
+  echo ""
+  if compgen -G "$EVIDENCE_ROOT/storage-evidence/*.csv" >/dev/null; then
+    total_files=$(awk -F',' 'NR>1' "$EVIDENCE_ROOT"/storage-evidence/*.csv 2>/dev/null | wc -l | tr -d ' ')
+    total_size=$(awk -F',' 'NR>1 {gsub(/"/, "", $0); s+=$4} END {print s+0}' "$EVIDENCE_ROOT"/storage-evidence/*.csv 2>/dev/null)
+    human=$(numfmt --to=iec "$total_size" 2>/dev/null || echo "${total_size}B")
+    echo "- 已扫描文件: **$total_files** 个,总大小 **$human**"
+    echo ""
+    echo "**存储根分布**:"
+    awk -F',' 'NR>1 {gsub(/"/, "", $7); c[$7]++} END {for (k in c) printf "  - %s: %s 个文件\n", k, c[k]}' "$EVIDENCE_ROOT"/storage-evidence/*.csv | sort -t: -k2 -rn | head -5
+  else
+    echo "- ⚠️  未扫描,跑:bash scripts/storage-evidence-scanner.sh"
+  fi
+  echo ""
+  echo "**建议覆盖**:"
+  echo "- 公司配的 Mac 本地文件 ✓ (本工具已扫)"
+  echo "- OneDrive 个人版: 需安装并登录 OneDrive 客户端"
+  echo "- 坚果云 / 百度网盘: 需安装并登录客户端"
+  echo "- 移动硬盘 / U 盘: 插入后自动出现在 \`/Volumes/\` (macOS) 或 \`/mnt/\` (Linux)"
+  echo "- 工作手机: 单独跑此脚本并指定 \`--paths\`"
 
 } > "$OUTPUT"
 

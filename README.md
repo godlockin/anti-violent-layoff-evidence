@@ -9,9 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Skills: 2](https://img.shields.io/badge/skills-developer%20%2B%20general-green.svg)](skills/)
-[![Scripts: 5](https://img.shields.io/badge/scripts-5-blue.svg)](scripts/)
+[![Scripts: 11](https://img.shields.io/badge/scripts-11-blue.svg)](scripts/)
 [![Jurisdiction: CN](https://img.shields.io/badge/jurisdiction-CN%20%7C%20HK%20%7C%20SG%20%7C%20US-lightgrey.svg)](#-适用法律体系--jurisdictions)
-[![Version: v1.1.1](https://img.shields.io/badge/version-v1.1.1-orange.svg)](CHANGELOG.md)
+[![Version: v1.2.0](https://img.shields.io/badge/version-v1.2.0-orange.svg)](CHANGELOG.md)
 [![Tested on macOS](https://img.shields.io/badge/tested-macOS%2026.5.1-blue.svg)](#-测试--testing)
 [![bash 3.2+](https://img.shields.io/badge/bash-3.2%2B%20%7C%205.x-green.svg)](CONTRIBUTING.md)
 
@@ -142,6 +142,28 @@ anti-violent-layoff-evidence/
 ```
 
 ## 🚀 快速开始
+
+### 🌟 推荐:用引导式 launcher(6 步)
+
+```bash
+bash scripts/avle-launcher.sh
+```
+
+交互流程:
+1. 📧 配置 git 邮箱(自动探测 + 确认)
+2. 🏢 配置公司域名
+3. 📂 配置扫描目录(默认)
+4. ⚙️  启用/禁用 6 个模块
+5. 🚀 开始全盘扫描(显示进度)
+6. ✅ 输出 checklist + 证据包路径
+
+**其他模式**:
+```bash
+bash scripts/avle-launcher.sh --quick     # 快速模式:跳过问询,全默认
+bash scripts/avle-launcher.sh --resume    # 跳过引导,直接跑(用已有配置)
+bash scripts/avle-launcher.sh --config    # 只配置,不扫描
+bash scripts/avle-launcher.sh --dry-run   # 显示将要执行什么
+```
 
 ### Step 0 — 一次性 setup
 
@@ -278,7 +300,14 @@ bash scripts/unify-summarize.sh --package
 - ✅ 应急 runbook
 - ✅ 中英双语 README
 
-### v1.1(2026-07-02)— 当前版本
+### v1.2(2026-07-02)— 当前版本
+- ✅ **avle-launcher.sh 引导式主入口**(6 步:邮箱/公司/目录/模块/确认/扫描)
+- ✅ **case-brief.md 动态 checklist**(根据实际文件自动勾选 [x])
+- ✅ **case-brief.md 证据缺口分析**(根据 git 占比给建议,5% 阈值)
+- ✅ launcher 支持 `--quick` / `--resume` / `--config` / `--dry-run`
+- ✅ detect_my_emails 加 5s 超时(避免大 ~/ 卡死)
+
+### v1.2 累计(从 v1.1 升)
 - ✅ 16 个网盘 + 移动硬盘扫描
 - ✅ 法定节假日 + 调休(2024-2026)
 - ✅ WFH / 客户现场 / 出差位置记录
@@ -289,7 +318,7 @@ bash scripts/unify-summarize.sh --package
 - ✅ ~/.config/avle.conf 用户配置
 - ✅ 本机实测,case-brief.md 自动生成
 
-### v1.2(计划)
+### v1.3(计划)
 - ⏳ 销售岗子 skill
 - ⏳ 财务岗子 skill
 - ⏳ 美/港/新法域适配
