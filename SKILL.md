@@ -60,22 +60,81 @@ metadata:
 
 ---
 
-## 🔗 子 skill 导航 / Sub-skills Navigation
+## 🏛️ 三层架构 / Three-Layer Architecture
 
-| 你是谁 / You are | 看这里 / Read |
-|------------------|---------------|
-| 程序员/测试/产品/DevOps/SRE/数据/算法/安全 / Developer, QA, PM, DevOps, SRE, Data, Algo, Security | [**`skills/developer/SKILL.md`**](skills/developer/SKILL.md) |
-| 人事/行政/财务/销售/市场/运营/法务/教师/医护/公务员 / HR, Admin, Finance, Sales, Marketing, Ops, Legal, Teacher, Doctor, Civil Servant | [**`skills/general/SKILL.md`**](skills/general/SKILL.md) |
+> **核心设计 / Core Design**:**所有人先用 general 基础层 → 不同岗位叠加角色层 → 统一汇总层合并出 case-brief**
+> **All workers use the general base layer first → add role-specific layer → unified aggregation layer merges into case-brief**
 
-## 🛠️ 工具脚本 / Tool Scripts
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Layer 3: 统一汇总层 / Unified Aggregation                  │
+│          scripts/unify-summarize.sh → case-brief.md        │
+│          (把所有 manifest/扫描/记录合并给律师)              │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 2: 角色层 / Role-Specific (按岗位叠加)              │
+│          skills/developer/SKILL.md (程序员/测试/产品/devops)│
+│          skills/general/SKILL.md (人事/行政/财务/...)       │
+│          ... 未来:sales / finance / legal / medical ...     │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 1: 基础层 / General Base (全员必跑)                  │
+│          skills/general/SKILL.md (适用所有岗位)             │
+│          邮件/审批/沟通/纸面/财务/位置/节假日               │
+└─────────────────────────────────────────────────────────────┘
+```
 
+### 📐 各层职责 / Layer Responsibilities
+
+| 层 | 职责 | 谁跑 | 何时跑 |
+|----|------|------|--------|
+| **基础层 (general)** | 邮件、审批、沟通、纸面、财务证据、位置记录、节假日 | **全员** | 入职第一天起 |
+| **角色层 (developer/...)** | 代码 commit、部署监控、工单、值班等**岗位特有**证据 | 对应岗位 | 入职后 1 周内布点 |
+| **汇总层 (unify)** | 把所有 manifest + 扫描结果合并成 case-brief | 律师面谈前 | 事发 → 律师面谈前 |
+
+---
+
+## 🔗 子 skill 导航 / Sub-Skills Navigation
+
+| Layer | 子 skill | 适用岗位 / Applicable Roles |
+|-------|---------|--------------------------|
+| **基础 + 通用** | [**`skills/general/SKILL.md`**](skills/general/SKILL.md) | **全员必读** / **All roles** — 人事 HR / 行政 / 财务 / 销售 / 市场 / 运营 / 法务 / 教师 / 医护 / 公务员 / 传统行业 |
+| **角色** | [**`skills/developer/SKILL.md`**](skills/developer/SKILL.md) | 程序员 / 测试 / 产品 / DevOps / SRE / 数据 / 算法 / 安全 / IT 运维 |
+
+> 💡 **重要**:基础层不重复在 developer skill 里(去重)。developer skill **只**讲代码/部署/工单特有证据。
+> The general base layer is NOT duplicated in the developer skill (DRY). developer/SKILL.md ONLY covers code/deployment/tickets.
+
+---
+
+## 🛠️ 工具脚本 / Tool Scripts (按层分类)
+
+### Layer 1 — 基础层脚本(全员必跑)
 | 用途 / Purpose | 命令 / Command |
 |---------------|---------------|
-| 周维护 / Weekly maintenance | `bash scripts/weekly-hash.sh` |
-| 扫描痕迹 / Scan traces | `bash scripts/evidence-scanner.sh --json` |
+| 周维护 hash 登记 / Weekly maintenance | `bash scripts/weekly-hash.sh` |
+| 扫描本地痕迹 / Scan local traces | `bash scripts/evidence-scanner.sh --json` |
+| **全磁盘 + 多网盘扫描**(16 个云盘 + 移动硬盘) / Multi-storage scan | `bash scripts/storage-evidence-scanner.sh` |
+| **位置工作记录**(WFH/客户现场/出差) / Location worklog | `bash scripts/location-worklog.sh` |
+| **法定节假日同步**(2024-2026 含调休) / Holiday sync | `bash scripts/holiday-sync.sh` |
 | 收集证据 / Collect | `bash scripts/evidence-collector.sh --apply` |
-| 汇总报告 / Aggregate | `bash scripts/evidence-aggregator.sh` |
-| 应急工具 / Incident toolkit | `bash scripts/incident-tools.sh` |
+
+### Layer 2 — 角色层脚本
+| 用途 / Purpose | 命令 / Command |
+|---------------|---------------|
+| **程序员 commit 遍历**(所有 git 仓库 + 元数据) | `bash scripts/git-evidence-scanner.sh` |
+
+### Layer 3 — 汇总层脚本
+| 用途 / Purpose | 命令 / Command |
+|---------------|---------------|
+| 基础汇总 / Base aggregate | `bash scripts/evidence-aggregator.sh` |
+| **统一汇总(推荐)** / Unified summary → `case-brief.md` | `bash scripts/unify-summarize.sh` |
+| **统一汇总 + 加密打包** / With AES-256 package | `bash scripts/unify-summarize.sh --package` |
+| **一键跑全部 + 汇总** / Run all + summary | `bash scripts/unify-summarize.sh --run-all` |
+
+### 应急 / Incident
+| 用途 / Purpose | 命令 / Command |
+|---------------|---------------|
+| 60 秒应急工具 / Emergency toolkit | `bash scripts/incident-tools.sh` |
+
+---
 
 ## 📋 模板 / Templates
 

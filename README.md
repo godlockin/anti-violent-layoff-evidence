@@ -100,6 +100,11 @@ anti-violent-layoff-evidence/
 │   ├── evidence-scanner.sh            ← 扫描本地痕迹 (只读)
 │   ├── evidence-collector.sh          ← 选择性收集 + 加密打包
 │   ├── evidence-aggregator.sh         ← 生成 case-brief.md
+│   ├── storage-evidence-scanner.sh    ← [基础层] 多存储扫描 (16 网盘 + 移动硬盘)
+│   ├── location-worklog.sh            ← [基础层] 位置记录 (WFH/客户现场/出差)
+│   ├── holiday-sync.sh                ← [基础层] 法定节假日 (2024-2026 + 调休)
+│   ├── git-evidence-scanner.sh        ← [角色层] 程序员 git commit 遍历
+│   ├── unify-summarize.sh             ← [汇总层] 统一汇总 → case-brief.md
 │   └── incident-tools.sh              ← 60 秒应急工具
 │
 ├── templates/                         ← 模板
@@ -110,23 +115,43 @@ anti-violent-layoff-evidence/
 │   └── manifest.csv.template
 │
 └── skills/                            ← 子 skill (按岗位分类)
-    ├── developer/SKILL.md             ← 程序员/测试/产品/devops
-    └── general/SKILL.md               ← 人事/行政/财务/销售 等
+    ├── general/SKILL.md               ← [基础层] 通用岗 (HR/行政/财务/...)
+    └── developer/SKILL.md             ← [角色层] 程序员/测试/产品/devops
+```
+
+## 🏛️ 三层架构 / Three-Layer Architecture
+
+> **核心设计**:所有岗位先用 **[基础层 general](./skills/general/SKILL.md)** → 按岗位叠加 **[角色层 developer/...](./skills/developer/SKILL.md)** → 律师面谈前跑 **[汇总层 unify-summarize.sh](./scripts/unify-summarize.sh)** 出 case-brief.md
+>
+> **Core Design**:All roles start with **[General Base](./skills/general/SKILL.md)** → add role-specific layer → aggregate via **[Unified Summarizer](./scripts/unify-summarize.sh)** before lawyer meeting.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│  Layer 3 汇总层 / Aggregation                             │
+│  scripts/unify-summarize.sh → case-brief.md               │
+├────────────────────────────────────────────────────────────┤
+│  Layer 2 角色层 / Role-Specific(按岗位叠加)              │
+│  skills/developer/SKILL.md (程序员/测试/产品/DevOps)     │
+│  skills/general/SKILL.md   (全员通用基础层,适合非程序员) │
+├────────────────────────────────────────────────────────────┤
+│  Layer 1 基础层 / General Base(全员必跑)                  │
+│  storage-scan / location-log / holiday-sync / weekly-hash │
+└────────────────────────────────────────────────────────────┘
 ```
 
 ## 🚀 快速开始
 
-### 1. 预防期(现在就开始)
+### Step 0 — 一次性 setup
 
 ```bash
-# 1) 克隆本仓库
+# 1) 克隆
 git clone https://github.com/<your-org>/anti-violent-layoff-evidence.git
 cd anti-violent-layoff-evidence
 
-# 2) 建立你的证据目录
+# 2) 建立证据目录
 mkdir -p ~/evidence/{periodic,incident,timestamp,notarized}
 
-# 3) 配置个人云同步
+# 3) 配置个人云同步(不要用公司云盘)
 # ✅ 推荐:坚果云 / 百度网盘 / OneDrive 个人版 / iCloud / Google Drive
 # ❌ 不要用:公司提供的云盘、公司配的 NAS、公司域账号下的任何 SaaS
 
@@ -134,46 +159,75 @@ mkdir -p ~/evidence/{periodic,incident,timestamp,notarized}
 echo "0 18 * * 5 bash $(pwd)/scripts/weekly-hash.sh" | crontab -
 ```
 
-### 2. 按岗位选用子 skill
+### Step 1 — 先读基础层(全员必读)
 
-| 你是谁 | 看哪个 skill |
-|--------|------------|
-| 程序员/测试/产品/DevOps/算法/数据/安全 | [`skills/developer/SKILL.md`](skills/developer/SKILL.md) |
-| 人事/行政/财务/销售/市场/运营/法务/教师/医护/公务员 | [`skills/general/SKILL.md`](skills/general/SKILL.md) |
+> 📖 [`skills/general/SKILL.md`](skills/general/SKILL.md) — 邮件/审批/沟通/纸面/财务/位置/节假日,**任何岗位都适用**
 
-### 3. 事发当日(60 秒启动)
+### Step 2 — 按岗位叠加角色层
 
-```bash
-# 查看应急 runbook
-cat templates/incident-runbook.md
+| 你是谁 / You are | 读这个 / Read |
+|------------------|--------------|
+| 程序员/测试/产品/DevOps/算法/数据/安全 / Developer, QA, PM, DevOps, Algo, Data, Security | [`skills/developer/SKILL.md`](skills/developer/SKILL.md) |
+| 其他岗位 / Others(HR/行政/财务/销售/教师/医护/公务员/...) | 不需要角色层,基础层就够 |
 
-# 启动 60 秒应急工具
-bash scripts/incident-tools.sh
-```
-
-### 4. 事后汇总(交给律师前)
+### Step 3 — 日常维护(预防期)
 
 ```bash
-# 1) 扫描本地可作为证据的痕迹
-bash scripts/evidence-scanner.sh --json
+# 每周五 18:00 自动跑(已设 cron)
+bash scripts/weekly-hash.sh
 
-# 2) 选择性收集(默认 dry-run,确认后 --apply)
-bash scripts/evidence-collector.sh --plan
-bash scripts/evidence-collector.sh --apply
-
-# 3) 汇总成 case-brief.md 交给律师
-bash scripts/evidence-aggregator.sh
+# 手动跑可选:
+bash scripts/storage-evidence-scanner.sh   # 每月:全盘扫描
+bash scripts/location-worklog.sh --auto   # 每天 9/13/18:位置打卡
+bash scripts/holiday-sync.sh              # 每年 12 月:更新明年节假日
 ```
 
-## 🛠️ 工具速查
+### Step 4 — 事发当日(60 秒)
 
-| 脚本 | 用途 | 何时跑 | 默认行为 |
-|------|------|--------|---------|
-| [`scripts/weekly-hash.sh`](scripts/weekly-hash.sh) | 每周五自动 hash 登记 | 每周(预防) | 写 manifest.csv |
-| [`scripts/evidence-scanner.sh`](scripts/evidence-scanner.sh) | 扫描本地可作为证据的痕迹 | 每月 / 准备期 | 只读 |
-| [`scripts/evidence-collector.sh`](scripts/evidence-collector.sh) | 按计划选择性收集 | 准备期 / 事发前 | dry-run,`--apply` 加密打包 |
-| [`scripts/evidence-aggregator.sh`](scripts/evidence-aggregator.sh) | 汇总所有 manifest 出 case-brief | 律师面谈前 | 写 case-brief.md |
-| [`scripts/incident-tools.sh`](scripts/incident-tools.sh) | 60 秒应急工具合集 | 事发当日 | 显示 checklist |
+```bash
+cat templates/incident-runbook.md         # 应急 runbook
+bash scripts/incident-tools.sh            # 60 秒应急工具
+bash scripts/evidence-collector.sh --apply  # 加密打包所有证据
+```
+
+### Step 5 — 律师面谈前(汇总)
+
+```bash
+# 一键汇总全部 evidence
+bash scripts/unify-summarize.sh
+
+# 一键汇总 + 加密打包
+bash scripts/unify-summarize.sh --package
+```
+
+## 🛠️ 工具速查(按层分类)
+
+### Layer 1 — 基础层工具(全员)
+| 脚本 | 用途 | 何时跑 |
+|------|------|--------|
+| [`scripts/weekly-hash.sh`](scripts/weekly-hash.sh) | 周维护 hash 登记 | 每周五(预防) |
+| [`scripts/storage-evidence-scanner.sh`](scripts/storage-evidence-scanner.sh) | **全磁盘 + 16 网盘 + 移动硬盘扫描** | 每月 |
+| [`scripts/location-worklog.sh`](scripts/location-worklog.sh) | **位置记录 (WFH/客户/出差)** | 每天 9/13/18 |
+| [`scripts/holiday-sync.sh`](scripts/holiday-sync.sh) | **法定节假日 + 调休 (2024-2026)** | 每年 12 月 |
+| [`scripts/evidence-scanner.sh`](scripts/evidence-scanner.sh) | 扫描本地痕迹(只读) | 准备期 |
+| [`scripts/evidence-collector.sh`](scripts/evidence-collector.sh) | 选择性收集(默认 dry-run) | 准备期 / 事发前 |
+
+### Layer 2 — 角色层工具
+| 脚本 | 适用岗位 | 何时跑 |
+|------|---------|--------|
+| [`scripts/git-evidence-scanner.sh`](scripts/git-evidence-scanner.sh) | 程序员/测试/产品/DevOps | 入职后 1 周内首次,后每周 |
+
+### Layer 3 — 汇总层工具
+| 脚本 | 用途 | 何时跑 |
+|------|------|--------|
+| [`scripts/unify-summarize.sh`](scripts/unify-summarize.sh) | **统一汇总 → case-brief.md** (推荐) | 律师面谈前 |
+| [`scripts/unify-summarize.sh --package`](scripts/unify-summarize.sh) | 统一汇总 + 加密打包 | 律师面谈前 |
+| [`scripts/evidence-aggregator.sh`](scripts/evidence-aggregator.sh) | 基础汇总(老接口) | 备选 |
+
+### Incident
+| 脚本 | 用途 | 何时跑 |
+|------|------|--------|
+| [`scripts/incident-tools.sh`](scripts/incident-tools.sh) | 60 秒应急工具 | 事发当日 |
 
 ## 🌍 适用法律体系
 
