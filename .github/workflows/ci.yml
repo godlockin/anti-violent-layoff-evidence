@@ -1,0 +1,184 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# 最小权限原则
+permissions:
+  contents: read
+
+# 防止 fork PR 触发额外攻击面
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shell-syntax:
+    name: Shell Script Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      # pin 到 commit SHA 防供应链(对应 v4.1.7)
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.7
+        with:
+          persist-credentials: false
+      - name: Install shellcheck (pinned version)
+        run: |
+          set -euo pipefail
+          # 固定 shellcheck 版本,避免 upstream 篡改
+          SHELLCHECK_VERSION="v0.9.0"
+          wget -q "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" -O /tmp/sc.tar.xz
+          tar -xJf /tmp/sc.tar.xz -C /tmp
+          sudo cp "/tmp/shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/local/bin/
+          shellcheck --version
+      - name: bash -n check (all scripts)
+        run: |
+          set -euo pipefail
+          # f 由 glob 展开,路径受仓库内容控制(非用户输入),无注入风险
+          for f in scripts/*.sh; do
+            echo "Checking $f"
+            bash -n "$f"
+          done
+      - name: shellcheck (best-effort)
+        run: |
+          set -euo pipefail
+          for f in scripts/*.sh; do
+            echo "Linting $f"
+            shellcheck -S warning "$f" || echo "  (warnings ignored)"
+          done
+        continue-on-error: true
+
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.7
+        with:
+          persist-credentials: false
+      - name: Install markdownlint-cli (pinned)
+        run: |
+          set -euo pipefail
+          npm install -g markdownlint-cli@0.38.0
+          markdownlint --version
+      - name: Lint Markdown
+        run: |
+          set -euo pipefail
+          markdownlint README.md SKILL.md CONTRIBUTING.md CHANGELOG.md SECURITY.md CODE_OF_CONDUCT.md || echo "  (warnings ignored)"
+        continue-on-error: true
+
+  sensitive-info:
+    name: Sensitive Information Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.7
+        with:
+          persist-credentials: false
+      - name: Check for accidental secrets (heuristic)
+        # 注意:仅做粗筛,人工 review 仍是必须
+        run: |
+          set -euo pipefail
+          echo "Scanning for potential sensitive info..."
+
+          # 仅扫描 .md / .sh,排除 .git 和 node_modules
+          declare -a patterns=(
+            "[0-9]{17}[0-9X]"
+            "1[3-9][0-9]{9}"
+            "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+            "\\b[0-9]{16,19}\\b"
+          )
+          declare -a exclude_patterns=(
+            "<your-"
+            "example.com"
+            "test@"
+            "your-org"
+            "github.com"
+            "noreply@"
+          )
+
+          found=0
+          for p in "${patterns[@]}"; do
+            echo "Pattern: $p"
+            # shellcheck disable=SC2086
+            matches=$(grep -rEn "$p" --include="*.md" --include="*.sh" \
+              --exclude-dir=.git --exclude-dir=node_modules . 2>/dev/null || true)
+            if [[ -n "$matches" ]]; then
+              # 过滤已知占位符
+              for excl in "${exclude_patterns[@]}"; do
+                matches=$(echo "$matches" | grep -v "$excl" || true)
+              done
+              if [[ -n "$matches" ]]; then
+                echo "POTENTIAL HIT:"
+                echo "$matches" | head -5
+                found=1
+              fi
+            fi
+          done
+
+          if [[ $found -eq 1 ]]; then
+            echo "WARNING: Possible sensitive info detected. Manual review required."
+            exit 0  # 不阻塞,只警告
+          else
+            echo "No sensitive info detected (heuristic scan)"
+          fi
+        continue-on-error: true
+
+  file-structure:
+    name: File Structure Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.7
+        with:
+          persist-credentials: false
+      - name: Verify required files
+        run: |
+          set -euo pipefail
+          required=(
+            "README.md"
+            "LICENSE"
+            "CONTRIBUTING.md"
+            "CHANGELOG.md"
+            "SECURITY.md"
+            "CODE_OF_CONDUCT.md"
+            "SKILL.md"
+            "scripts/weekly-hash.sh"
+            "scripts/evidence-scanner.sh"
+            "scripts/evidence-collector.sh"
+            "scripts/evidence-aggregator.sh"
+            "scripts/incident-tools.sh"
+            "skills/developer/SKILL.md"
+            "skills/general/SKILL.md"
+            "templates/incident-runbook.md"
+            ".gitignore"
+          )
+          missing=()
+          for f in "${required[@]}"; do
+            if [[ ! -f "$f" ]]; then
+              missing+=("$f")
+            fi
+          done
+          if [[ ${#missing[@]} -gt 0 ]]; then
+            echo "ERROR: Missing required files:"
+            printf '  - %s\n' "${missing[@]}"
+            exit 1
+          fi
+          echo "All required files present"
+
+  # 仅 PR 时跑,做更严格的 review 提示
+  pr-review-hint:
+    name: PR Review Hint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Display legal-boundary checklist
+        run: |
+          echo "=== 提交者法律边界自检 ==="
+          cat <<'EOF'
+          请确认 PR 满足:
+          - [ ] 无教唆攻击/伪造/泄密/报复内容
+          - [ ] 法律引用有具体出处
+          - [ ] 无真实个人信息
+          - [ ] 脚本通过 bash -n
+          - [ ] 已更新 CHANGELOG.md (如适用)
+          EOF

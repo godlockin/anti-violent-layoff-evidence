@@ -1,0 +1,67 @@
+# === 关键:绝不入库 ===
+# 个人证据、本地配置、密钥、密码
+*.eml
+*.msg
+*.mbox
+*.pst
+*.ost
+*工资条*
+*工资*
+*薪金*
+*salary*
+*wage*
+*payslip*
+*工资单*
+
+# 个人云盘同步目录(用户自建)
+evidence/
+collected/
+case-brief.md
+evidence-scan.json
+
+# 加密归档(可能含敏感信息)
+*.tar.gz.enc
+*.zip.enc
+*.7z.enc
+
+# 密钥
+*.pem
+*.key
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+*.p12
+*.pfx
+.gpg/
+
+# 个人 git 身份
+.gitconfig
+.gnupg/
+.npmrc
+.pypirc
+.netrc
+.aws/
+.ssh/
+
+# 系统 / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.bak
+
+# 测试产物
+/tmp/
+/test-output/
+*.test
+*.tmp
+
+# 文档构建
+/site/
+/public/
+.docusaurus/
+.cache/
