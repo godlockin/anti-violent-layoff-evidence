@@ -399,6 +399,28 @@ bash scripts/unify-summarize.sh
 - GitHub org → `<your-org>`
 - 工作分支 → `<branch>`
 
+## 🛠️ CLI 任务执行规范 (kallax framework)
+
+本项目 CLI 任务**严格遵守** [kallax framework CLI Rule](https://github.com/kallax/docs/cli-rule.md):
+
+1. **后台执行** — 不阻塞主 shell
+2. **日志到 /tmp** — `/tmp/claude-tasks/<name>-<ts>.log`
+3. **check exit code** — 不假设成功
+4. **返回 OK / FAILED + 自动 tail 10** — 大模型上下文友好
+5. **不监控日志** — 禁日志实时监控命令(详见 kallax 文档)
+
+**4 层防护**(详见 [kallax cli-rule-lessons.md](https://github.com/kallax/docs/cli-rule-lessons.md)):
+1. Claude Code PreToolUse hook 拦截
+2. 自校验 marker(`EXEC_TASK_INTEGRITY_v1`)
+3. `verify-rule.sh` 一键验证(5 项检查 + 12 个 case)
+4. CLAUDE.md 第 9 章规则文档
+
+**用法**:
+```bash
+bash ~/.claude/exec-task.sh "scan" "bash scripts/storage-evidence-scanner.sh"
+# 输出: OK success (成功) / FAILED exit=N + 末尾 10 行 (失败)
+```
+
 本仓库 v1.2.4+ **git 历史也已脱敏**:用 `git filter-repo` 改写所有 commit,
 旧 commit hash 全部失效,远程已 force push。
 **任何人从 GitHub 拉取后,都看不到指向性内容。**
